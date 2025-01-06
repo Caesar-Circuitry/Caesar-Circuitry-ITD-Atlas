@@ -14,16 +14,15 @@ public class outtake {
     private Motor.Encoder vertEnc; // Port -
     private Servo outClaw; // Port -
     private Servo outClawPivot; // Port -
-    private Servo out4BarPivot; // Port -
-    //TODO: change name once servo is figured out -ask Zac-
-    private Servo outUnknown; // Port -
+    private Servo out4BarPivot1; // Port -
+    private Servo out4BarPivot2; // Port -
     private PIDFController viper;
     private double vertLeftPower=0, prevVertLeftPower=0;
     private double vertRightPower=0, prevVertRightPower=0;
     private double outClawPos=0, prevOutClawPos=0;
     private double outClawPivotPos=0, prevOutClawPivotPos=0;
-    private double out4BarPivotPos=0, prevOut4BarPivotPos=0;
-    private double outUnknownPos=0, prevOutUnknownPos=0;
+    private double out4BarPivot1Pos=0, prevout4BarPivot1Pos=0;
+    private double out4BarPivot2Pos=0, prevout4BarPivot2Pos=0;
     private double EncoderPos = 0;
     private double ticksPerInch;
     private double Error = 0;
@@ -36,8 +35,8 @@ public class outtake {
         vertEnc = robot.getVertEnc();
         outClaw = robot.getOutClaw();
         outClawPivot = robot.getOutClawPivot();
-        out4BarPivot = robot.getOut4BarPivot();
-        outUnknown = robot.getOutUnknown();
+        out4BarPivot1 = robot.getout4BarPivot1();
+        out4BarPivot2 = robot.getout4BarPivot2();
         viper = new PIDFController(robot.getVertCoefficients().p,robot.getVertCoefficients().i,robot.getVertCoefficients().d,robot.getVertCoefficients().f);
         ticksPerInch = robot.getTicksPerInchVert();
     }
@@ -77,13 +76,13 @@ public class outtake {
             this.outClawPivot.setPosition(outClawPivotPos);
             this.prevOutClawPivotPos = this.outClawPivotPos;
         }
-        if (out4BarPivotPos != prevOut4BarPivotPos) {
-            this.out4BarPivot.setPosition(out4BarPivotPos);
-            this.prevOut4BarPivotPos = this.out4BarPivotPos;
+        if (out4BarPivot1Pos != prevout4BarPivot1Pos) {
+            this.out4BarPivot1.setPosition(out4BarPivot1Pos);
+            this.prevout4BarPivot1Pos = this.out4BarPivot1Pos;
         }
-        if (outUnknownPos != prevOutUnknownPos) {
-            this.outUnknown.setPosition(outUnknownPos);
-            this.prevOutUnknownPos = this.outUnknownPos;
+        if (out4BarPivot2Pos != prevout4BarPivot2Pos) {
+            this.out4BarPivot2.setPosition(out4BarPivot2Pos);
+            this.prevout4BarPivot2Pos = this.out4BarPivot2Pos;
         }
         try {
             EncoderPos = vertEnc.getDistance();

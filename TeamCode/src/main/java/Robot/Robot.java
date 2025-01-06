@@ -71,9 +71,8 @@ private opModeType opMode= opModeType.TELE_OP;
         /*Outtake*/
             private Servo outClaw; // Port -
             private Servo outClawPivot; // Port -
-            private Servo out4BarPivot; // Port -
-            //TODO: change name once servo is figured out -ask Zac-
-            private Servo outUnknown; // Port -
+            private Servo out4BarPivot1; // Port -
+            private Servo out4BarPivot2; // Port -
 
     /*Sensors*/
         private Limelight3A limelight;
@@ -126,9 +125,9 @@ private opModeType opMode= opModeType.TELE_OP;
         intPivot = hardwareMap.get(Servo.class, "intPivot");
 
         outClaw = hardwareMap.get(Servo.class, "outClaw");
-        out4BarPivot = hardwareMap.get(Servo.class, "out4BarPivot");
+        out4BarPivot1 = hardwareMap.get(Servo.class, "out4BarPivot1");
         outClawPivot = hardwareMap.get(Servo.class, "outClawPivot");
-        outUnknown = hardwareMap.get(Servo.class, "outUnknown");
+        out4BarPivot2 = hardwareMap.get(Servo.class, "out4BarPivot2");
 
     }
 
@@ -226,12 +225,12 @@ private opModeType opMode= opModeType.TELE_OP;
         return outClawPivot;
     }
 
-    public Servo getOut4BarPivot() {
-        return out4BarPivot;
+    public Servo getout4BarPivot1() {
+        return out4BarPivot1;
     }
 
-    public Servo getOutUnknown() {
-        return outUnknown;
+    public Servo getout4BarPivot2() {
+        return out4BarPivot2;
     }
 
     public Follower getFollower() {
