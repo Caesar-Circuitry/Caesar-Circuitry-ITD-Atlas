@@ -45,11 +45,9 @@ private opModeType opMode= opModeType.TELE_OP;
             private DcMotorEx BLM; // Port -
         /*ViperMotors*/
             /*Vertical*/
-                private DcMotorEx vertLeft; // Port -
-                private DcMotorEx vertRight; // Port -
+                private DcMotorEx vertSlide; // Port -
             /*Horizontal*/
-                private DcMotorEx horzLeft; // Port -
-                private DcMotorEx horzRight; // Port -
+                private DcMotorEx horzSlide; // Port -
         /*ViperEncoders*/
             /*Vertical*/
                 private Motor.Encoder vertEnc; // Port -
@@ -109,13 +107,11 @@ private opModeType opMode= opModeType.TELE_OP;
         BRM = hardwareMap.get(DcMotorEx.class,"BRM");
         BLM = hardwareMap.get(DcMotorEx.class,"BLM");
 
-        vertLeft = hardwareMap.get(DcMotorEx.class, "vertLeft");
-        vertRight = hardwareMap.get(DcMotorEx.class, "vertRight");
-        vertEnc = new Motor(hardwareMap,"vertRight", Motor.GoBILDA.RPM_1150).encoder;
+        vertSlide = hardwareMap.get(DcMotorEx.class, "vertSlide");
+        vertEnc = new Motor(hardwareMap,"vertRight", Motor.GoBILDA.RPM_435).encoder;
 
-        horzLeft = hardwareMap.get(DcMotorEx.class, "horzLeft");
-        horzRight = hardwareMap.get(DcMotorEx.class, "horzRight");
-        horzEnc = new Motor(hardwareMap,"vertRight", Motor.GoBILDA.RPM_1150).encoder;
+        horzSlide = hardwareMap.get(DcMotorEx.class, "horzSlide");
+        horzEnc = new Motor(hardwareMap,"vertRight", Motor.GoBILDA.RPM_435).encoder;
     }
 
     private void initServos(){
@@ -177,20 +173,12 @@ private opModeType opMode= opModeType.TELE_OP;
         return BLM;
     }
 
-    public DcMotorEx getVertLeft() {
-        return vertLeft;
+    public DcMotorEx getVertSlide() {
+        return vertSlide;
     }
 
-    public DcMotorEx getVertRight() {
-        return vertRight;
-    }
-
-    public DcMotorEx getHorzLeft() {
-        return horzLeft;
-    }
-
-    public DcMotorEx getHorzRight() {
-        return horzRight;
+    public DcMotorEx getHorzSlide() {
+        return horzSlide;
     }
 
     public Motor.Encoder getVertEnc() {
@@ -275,5 +263,9 @@ private opModeType opMode= opModeType.TELE_OP;
     public void setHorzCoefficients(PIDFCoefficients horzCoefficients){
         this.horzCoefficients = horzCoefficients;
         intake.setCoefficients(horzCoefficients);
+    }
+
+    public RevColorSensorV3 getColorSensor() {
+        return colorSensor;
     }
 }

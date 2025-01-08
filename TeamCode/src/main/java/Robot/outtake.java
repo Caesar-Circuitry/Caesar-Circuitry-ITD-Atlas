@@ -9,16 +9,14 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class outtake {
 
     private Robot robot;
-    private DcMotorEx vertLeft; // Port -
-    private DcMotorEx vertRight; // Port -
+    private DcMotorEx vertSlide; // Port -
     private Motor.Encoder vertEnc; // Port -
     private Servo outClaw; // Port -
     private Servo outClawPivot; // Port -
     private Servo out4BarPivot1; // Port -
     private Servo out4BarPivot2; // Port -
     private PIDFController viper;
-    private double vertLeftPower=0, prevVertLeftPower=0;
-    private double vertRightPower=0, prevVertRightPower=0;
+    private double vertSlidePower=0, prevvertSlidePower=0;
     private double outClawPos=0, prevOutClawPos=0;
     private double outClawPivotPos=0, prevOutClawPivotPos=0;
     private double out4BarPivot1Pos=0, prevout4BarPivot1Pos=0;
@@ -30,8 +28,7 @@ public class outtake {
 
     public outtake(Robot robot){
         this.robot = robot;
-        vertLeft = robot.getVertLeft();
-        vertRight = robot.getVertRight();
+        vertSlide = robot.getVertSlide();
         vertEnc = robot.getVertEnc();
         outClaw = robot.getOutClaw();
         outClawPivot = robot.getOutClawPivot();
@@ -57,16 +54,11 @@ public class outtake {
 
     public void periodic(){
         Error = targetPos - EncoderPos;
-        vertLeftPower = viper.calculate(Error);
-        vertLeftPower = (vertLeftPower * robot.getNormalVoltage()) / robot.getVoltage();
-        vertRightPower = vertLeftPower;
-        if(vertLeftPower != prevVertLeftPower){
-            this.vertLeft.setPower(vertLeftPower);
-            this.prevVertLeftPower = this.vertLeftPower;
-        }
-        if (vertRightPower != prevVertRightPower) {
-            this.vertRight.setPower(vertRightPower);
-            this.prevVertRightPower = this.vertRightPower;
+        vertSlidePower = viper.calculate(Error);
+        vertSlidePower = (vertSlidePower * robot.getNormalVoltage()) / robot.getVoltage();
+        if(vertSlidePower != prevvertSlidePower){
+            this.vertSlide.setPower(vertSlidePower);
+            this.prevvertSlidePower = this.vertSlidePower;
         }
         if (outClawPos != prevOutClawPos) {
             this.outClaw.setPosition(outClawPos);
