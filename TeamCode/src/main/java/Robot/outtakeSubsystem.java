@@ -85,6 +85,8 @@ public class outtakeSubsystem extends SubsystemBase {
         }
     }
 
-
+    public void setScoringState(Robot.scoringState scoringState){
+        this.robot.setScoringState(scoringState);
+    }
 
 }

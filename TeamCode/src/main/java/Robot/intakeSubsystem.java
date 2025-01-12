@@ -9,7 +9,21 @@ import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 public class intakeSubsystem extends SubsystemBase {
+    public enum sampleColor{
+        RED,
+        YELLOW,
+        BLUE,
+        NONE
+    }
+    public sampleColor sampleColorDetected = sampleColor.NONE;
+    public enum sampleColorTarget{
+        ANY_COLOR, // if basket
+        ALLIANCE_ONLY // if specimen
+    }
+    public sampleColorTarget colorTarget = sampleColorTarget.ALLIANCE_ONLY;
     private Robot robot;
     private DcMotorEx horzSlide; // Port -
     private Motor.Encoder horzEnc; // Port -
@@ -28,7 +42,6 @@ public class intakeSubsystem extends SubsystemBase {
     private double ticksPerInch;
     private double Error = 0;
     private double targetPos = 0;
-    private boolean useColorSensor = false;
 
     public intakeSubsystem(Robot robot) {
         this.robot = robot;
@@ -78,42 +91,36 @@ public class intakeSubsystem extends SubsystemBase {
     private void updateCase(){
         switch (robot.getScoringState()){
             case SUB:
-                useColorSensor = true;
                 this.setTargetPos(intakeConstants.viperSub);
                 this.intClawRotatePos = intakeConstants.intClawRotateFloor;
                 this.intClawPivotPos = intakeConstants.intClawPivotMiddle;
                 this.intPivotPos = intakeConstants.intPivotFloor;
                 break;
             case HOMED:
-                useColorSensor = false;
                 this.setTargetPos(intakeConstants.viperZero);
                 this.intClawRotatePos = intakeConstants.intClawRotateHome;
                 this.intClawPivotPos = intakeConstants.intClawPivotMiddle;
                 this.intPivotPos = intakeConstants.intPivotHome;
                 break;
             case TRANSFER:
-                useColorSensor = false;
                 this.setTargetPos(intakeConstants.viperZero);
                 this.intClawRotatePos = intakeConstants.intClawRotateTransfer;
                 this.intClawPivotPos = intakeConstants.intClawPivotMiddle;
                 this.intPivotPos = intakeConstants.intPivotTransfer;
                 break;
             case OBSERVATION_ZONE:
-                useColorSensor = false;
                 this.setTargetPos(intakeConstants.viperMid);
                 this.intClawRotatePos = intakeConstants.intClawRotateFloor;
                 this.intClawPivotPos = intakeConstants.intClawPivotMiddle;
                 this.intPivotPos = intakeConstants.intPivotFloor;
                 break;
             case HIGH_CHAMBER:
-                useColorSensor = false;
                 this.setTargetPos(intakeConstants.viperZero);
                 this.intClawRotatePos = intakeConstants.intClawRotateHome;
                 this.intClawPivotPos = intakeConstants.intClawPivotMiddle;
                 this.intPivotPos = intakeConstants.intPivotHome;
                 break;
             case HIGH_BASKET:
-                useColorSensor = false;
                 this.setTargetPos(intakeConstants.viperZero);
                 this.intClawRotatePos = intakeConstants.intClawRotateHome;
                 this.intClawPivotPos = intakeConstants.intClawPivotMiddle;
@@ -135,18 +142,50 @@ public class intakeSubsystem extends SubsystemBase {
     private double getPos(){
         return EncoderPos / ticksPerInch;
     }
-    public boolean closeClaw(){
-        if (useColorSensor){
-            if (robot.getTeamColor().equals(Robot.TeamColor.RED)){
-                
-            }else{
-
+    public void closeClaw(){
+            intClawPos = intakeConstants.intClawClose;
+    }
+    public void setScoringState(Robot.scoringState scoringState){
+        this.robot.setScoringState(scoringState);
+    }
+    public sampleColor sampleColorDetected() {
+        int red = colorSensor.red();
+        int green = colorSensor.green();
+        int blue = colorSensor.blue();
+        if ((blue + green + red) >= 900) { // If it's less than 900, then there isn't a sample fully in yet
+            if (blue >= green && blue >= red) {
+                return sampleColor.BLUE;
+            } else if (green >= red) {
+                return sampleColor.YELLOW;
+            } else {
+                return sampleColor.RED;
             }
         }
-        else{
-            intClawPos = intakeConstants.intClawClose;
-            return true;
+        else {
+            return sampleColor.NONE;
+        }
+    }
+    public boolean correctSampleDetected() {
+        switch (colorTarget) {
+            case ANY_COLOR:
+                if (sampleColorDetected.equals(sampleColor.YELLOW) ||
+                        (sampleColorDetected.equals(sampleColor.BLUE) && robot.getTeamColor().equals(Robot.TeamColor.BLUE) ||
+                                sampleColorDetected.equals(sampleColor.RED) && robot.getTeamColor().equals(Robot.TeamColor.RED))) {
+                    return true;
+                }
+                break;
+            case ALLIANCE_ONLY:
+                if (sampleColorDetected.equals(sampleColor.BLUE) && robot.getTeamColor().equals(Robot.TeamColor.BLUE) ||
+                        sampleColorDetected.equals(sampleColor.RED) && robot.getTeamColor().equals(Robot.TeamColor.RED)) {
+                    return true;
+                }
+                break;
         }
         return false;
     }
+
+    public boolean hasSample() {
+        return colorSensor.getDistance(DistanceUnit.CM) < intakeConstants.SAMPLE_DISTANCE_THRESHOLD;
+    }
+
 }

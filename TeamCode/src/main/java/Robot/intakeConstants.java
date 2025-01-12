@@ -16,5 +16,5 @@ public class intakeConstants {
     public static double intPivotHome = 1;
     public static double intClawClose = 0;
     public static double intClawOpen = 1;
-
+    public static double SAMPLE_DISTANCE_THRESHOLD = 3;
 }
