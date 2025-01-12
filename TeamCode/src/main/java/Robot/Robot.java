@@ -23,6 +23,20 @@ public enum opModeType{
     TELE_OP,
     AUTO
 }
+public enum TeamColor{
+    RED,
+    BLUE
+}
+public enum scoringState{
+    OBSERVATION_ZONE,
+    SUB,
+    TRANSFER,
+    HOMED,
+    HIGH_CHAMBER,
+    HIGH_BASKET
+}
+private scoringState ScoringState;
+private TeamColor teamColor;
 private opModeType opMode= opModeType.TELE_OP;
     RevHubOrientationOnRobot orientation = new RevHubOrientationOnRobot(
             RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
@@ -100,6 +114,7 @@ private opModeType opMode= opModeType.TELE_OP;
             limelight.pipelineSwitch(0);
             limelight.start();
         }
+        teamColor = Robot.TeamColor.BLUE;
     }
     private void initMotors(){
         FRM = hardwareMap.get(DcMotorEx.class,"FRM");
@@ -140,6 +155,7 @@ private opModeType opMode= opModeType.TELE_OP;
         intake = new intake(this);
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
         voltageTimer = new ElapsedTime();
+        ScoringState = scoringState.HOMED;
     }
 
     public void Periodic(){
@@ -267,5 +283,21 @@ private opModeType opMode= opModeType.TELE_OP;
 
     public RevColorSensorV3 getColorSensor() {
         return colorSensor;
+    }
+
+    public TeamColor getTeamColor() {
+        return teamColor;
+    }
+
+    public void setTeamColor(TeamColor teamColor) {
+        this.teamColor = teamColor;
+    }
+
+    public scoringState getScoringState() {
+        return ScoringState;
+    }
+
+    public void setScoringState(scoringState scoringState) {
+        ScoringState = scoringState;
     }
 }
