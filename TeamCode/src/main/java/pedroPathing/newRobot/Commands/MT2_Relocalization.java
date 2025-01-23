@@ -1,4 +1,4 @@
-package Commands;
+package pedroPathing.newRobot.Commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.pedropathing.localization.Pose;
