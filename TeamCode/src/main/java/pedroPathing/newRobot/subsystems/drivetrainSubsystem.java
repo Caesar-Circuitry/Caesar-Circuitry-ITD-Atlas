@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
+import pedroPathing.newRobot.hardware.voltageIterator;
 
 public class drivetrainSubsystem extends SubsystemBase {
 
@@ -17,6 +18,7 @@ public class drivetrainSubsystem extends SubsystemBase {
 
     public drivetrainSubsystem(HardwareMap hMap, Pose startingPose, boolean TeleOpEnabled){
         follower = new Follower(hMap);
+        voltageIterator.setHmap(hMap);
 
         Constants.setConstants(FConstants.class, LConstants.class);
         follower.setStartingPose(startingPose);
@@ -30,6 +32,7 @@ public class drivetrainSubsystem extends SubsystemBase {
     public void periodic(){
         follower.update();
         follower.updatePose();
+        voltageIterator.periodic();
     }
 
     public void setPathChain(PathChain pathChain){

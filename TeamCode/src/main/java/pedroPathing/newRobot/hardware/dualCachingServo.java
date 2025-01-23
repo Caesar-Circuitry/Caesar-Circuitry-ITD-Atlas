@@ -2,10 +2,10 @@ package pedroPathing.newRobot.hardware;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class dualServo {
+public class dualCachingServo {
     private Servo servo1,servo2;
     private double servo1Pos = 0, servo1PrevPos = 0, servo2Pos = 0, servo2PrevPos = 0;
-    public dualServo(Servo servo1, Servo servo2){
+    public dualCachingServo(Servo servo1, Servo servo2){
         this.servo1 = servo1;
         this.servo2 = servo2;
     }
