@@ -1,19 +1,19 @@
-package Robot.Commands.Outtakecommands;
+package Robot.Commands.outtakeCommands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import Robot.subsystems.outtakeSubsystem;
 
-public class outClawPivotChamber extends CommandBase {
+public class outViperLowChamber extends CommandBase {
     private final outtakeSubsystem subsystem;
 
-    public outClawPivotChamber(outtakeSubsystem subsystem){
+    public outViperLowChamber(outtakeSubsystem subsystem){
         this.subsystem = subsystem;
         addRequirements(this.subsystem);
     }
     @Override
     public void initialize() {
-        subsystem.setOutClawPivotChamber();
+        subsystem.setVertSlideLowChamber();
     }
 
     @Override

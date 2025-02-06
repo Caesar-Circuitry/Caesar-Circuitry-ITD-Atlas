@@ -5,6 +5,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.util.Constants;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import pedroPathing.constants.FConstants;
@@ -15,11 +16,12 @@ public class drivetrainSubsystem extends SubsystemBase {
 
     public final Follower follower;
     public PathChain pathChain;
+    private Limelight3A limelight;
 
     public drivetrainSubsystem(HardwareMap hMap, Pose startingPose, boolean TeleOpEnabled){
         follower = new Follower(hMap);
         voltageIterator.setHmap(hMap);
-
+        limelight = hMap.get(Limelight3A.class,"LL");
         Constants.setConstants(FConstants.class, LConstants.class);
         follower.setStartingPose(startingPose);
 
@@ -58,4 +60,11 @@ public class drivetrainSubsystem extends SubsystemBase {
         follower.setTeleOpMovementVectors(0,0,0,robotCentric);
     }
 
+    public Limelight3A getLimelight(){
+        return limelight;
+    }
+
+    public Follower getFollower() {
+        return follower;
+    }
 }

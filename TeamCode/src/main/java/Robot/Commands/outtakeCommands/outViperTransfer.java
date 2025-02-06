@@ -1,19 +1,19 @@
-package Robot.Commands.Outtakecommands;
+package Robot.Commands.outtakeCommands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import Robot.subsystems.outtakeSubsystem;
 
-public class outClawPivotBasket extends CommandBase {
+public class outViperTransfer extends CommandBase {
     private final outtakeSubsystem subsystem;
 
-    public outClawPivotBasket(outtakeSubsystem subsystem){
+    public outViperTransfer(outtakeSubsystem subsystem){
         this.subsystem = subsystem;
         addRequirements(this.subsystem);
     }
     @Override
     public void initialize() {
-        subsystem.setOutClawPivotBasket();
+        subsystem.setVertSlideTransfer();
     }
 
     @Override

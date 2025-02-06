@@ -1,19 +1,19 @@
-package Robot.Commands.Outtakecommands;
+package Robot.Commands.outtakeCommands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import Robot.subsystems.outtakeSubsystem;
 
-public class outClawPivotTransfer extends CommandBase {
+public class out4BarPivotTransfer extends CommandBase {
     private final outtakeSubsystem subsystem;
 
-    public outClawPivotTransfer(outtakeSubsystem subsystem){
+    public out4BarPivotTransfer(outtakeSubsystem subsystem){
         this.subsystem = subsystem;
         addRequirements(this.subsystem);
     }
     @Override
     public void initialize() {
-        subsystem.setOutClawPivotTransfer();
+        subsystem.setOut4BarPivotTransfer();
     }
 
     @Override

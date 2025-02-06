@@ -1,5 +1,8 @@
 package Robot;
 
+import com.acmerobotics.dashboard.config.Config;
+
+@Config
 public class constants{
     public static double oKP = 0,oKD = 0,oKV = 0,oKA = 0,oKS = 0,oKG = 0;
     public static double iKP = 0,iKD = 0,iKV = 0,iKA = 0,iKS = 0,iKG = 0;
@@ -14,4 +17,9 @@ public class constants{
     public static double intClawPivotSub = 0, intClawPivotObs = 0, intClawPivotTransfer = 0;
     public static double intClawRotateLeft = 0, intClawRotateMiddle = 0, intClawRotateRight = 0;
     public static double intViperZero = 0, intViperTransfer = 0, intViperSub = 0, intViperObs = 0;
+
+    public enum opModeType{
+        TELEOP,
+        AUTONOMOUS
+    }
 }

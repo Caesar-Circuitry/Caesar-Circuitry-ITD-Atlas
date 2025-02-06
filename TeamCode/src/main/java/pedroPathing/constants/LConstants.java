@@ -2,21 +2,24 @@ package pedroPathing.constants;
 
 import com.pedropathing.localization.*;
 import com.pedropathing.localization.constants.*;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 
 public class LConstants {
     static {
-        ThreeWheelConstants.forwardTicksToInches = .001989436789;
-        ThreeWheelConstants.strafeTicksToInches = .001989436789;
-        ThreeWheelConstants.turnTicksToInches = .001989436789;
-        ThreeWheelConstants.leftY = 1;
-        ThreeWheelConstants.rightY = -1;
-        ThreeWheelConstants.strafeX = -2.5;
-        ThreeWheelConstants.leftEncoder_HardwareMapName = "leftFront";
-        ThreeWheelConstants.rightEncoder_HardwareMapName = "rightRear";
-        ThreeWheelConstants.strafeEncoder_HardwareMapName = "rightFront";
-        ThreeWheelConstants.leftEncoderDirection = Encoder.REVERSE;
-        ThreeWheelConstants.rightEncoderDirection = Encoder.REVERSE;
-        ThreeWheelConstants.strafeEncoderDirection = Encoder.FORWARD;
+        ThreeWheelIMUConstants.forwardTicksToInches = .001989436789;
+        ThreeWheelIMUConstants.strafeTicksToInches = .001989436789;
+        ThreeWheelIMUConstants.turnTicksToInches = .001989436789;
+        ThreeWheelIMUConstants.leftY = 5.25;
+        ThreeWheelIMUConstants.rightY = -5.25;
+        ThreeWheelIMUConstants.strafeX = -.125;
+        ThreeWheelIMUConstants.leftEncoder_HardwareMapName = "BRM";
+        ThreeWheelIMUConstants.rightEncoder_HardwareMapName = "FRM";
+        ThreeWheelIMUConstants.strafeEncoder_HardwareMapName = "strafeEncoder";
+        ThreeWheelIMUConstants.leftEncoderDirection = Encoder.REVERSE;
+        ThreeWheelIMUConstants.rightEncoderDirection = Encoder.REVERSE;
+        ThreeWheelIMUConstants.strafeEncoderDirection = Encoder.FORWARD;
+        ThreeWheelIMUConstants.IMU_HardwareMapName = "imu";
+        ThreeWheelIMUConstants.IMU_Orientation = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.RIGHT, RevHubOrientationOnRobot.UsbFacingDirection.UP);
     }
 }
 

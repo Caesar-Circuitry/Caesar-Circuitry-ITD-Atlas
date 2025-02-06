@@ -1,21 +1,19 @@
-package Robot.Commands.Outtakecommands;
+package Robot.Commands.outtakeCommands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import Robot.subsystems.outtakeSubsystem;
 
-public class outClawOpen extends CommandBase {
-
+public class outViperHighChamber extends CommandBase {
     private final outtakeSubsystem subsystem;
 
-    public outClawOpen(outtakeSubsystem subsystem){
+    public outViperHighChamber(outtakeSubsystem subsystem){
         this.subsystem = subsystem;
         addRequirements(this.subsystem);
     }
-
     @Override
     public void initialize() {
-        subsystem.openClaw();
+        subsystem.setVertSlideHighChamber();
     }
 
     @Override

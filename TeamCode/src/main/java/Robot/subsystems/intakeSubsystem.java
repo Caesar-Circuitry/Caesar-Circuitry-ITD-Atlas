@@ -1,5 +1,7 @@
 package Robot.subsystems;
 
+import static Robot.constants.intClawClose;
+import static Robot.constants.intClawOpen;
 import static Robot.constants.intClawPivotObs;
 import static Robot.constants.intClawPivotSub;
 import static Robot.constants.intClawPivotTransfer;
@@ -79,10 +81,10 @@ public class intakeSubsystem extends SubsystemBase {
     }
 
     public void openClaw(){
-        this.intClaw.setServoPos(outClawOpen);
+        this.intClaw.setServoPos(intClawOpen);
     }
     public void closeClaw(){
-        this.intClaw.setServoPos(outClawClose);
+        this.intClaw.setServoPos(intClawClose);
     }
 
     public void setIntClawPivotSub(){
