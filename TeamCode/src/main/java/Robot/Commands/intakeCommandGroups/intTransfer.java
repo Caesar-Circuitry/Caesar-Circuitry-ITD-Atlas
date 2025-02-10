@@ -7,6 +7,7 @@ import Robot.Commands.IntakeCommands.intClawPivotTransfer;
 import Robot.Commands.IntakeCommands.intClawRotateMiddle;
 import Robot.Commands.IntakeCommands.intSetViperObs;
 import Robot.Commands.IntakeCommands.intSetViperTransfer;
+import Robot.Commands.IntakeCommands.intPivotTransfer;
 import Robot.subsystems.intakeSubsystem;
 
 
@@ -17,7 +18,8 @@ public class intTransfer extends ParallelCommandGroup {
         addCommands(
                 new intClawPivotTransfer(this.subsystem),
                 new intClawRotateMiddle(this.subsystem),
-                new intSetViperTransfer(this.subsystem)
+                new intSetViperTransfer(this.subsystem),
+                new intPivotTransfer(this.subsystem)
         );
         addRequirements(this.subsystem);
 

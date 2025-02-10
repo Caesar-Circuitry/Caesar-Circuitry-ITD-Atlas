@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 
 import Robot.Commands.IntakeCommands.intClawPivotObs;
 import Robot.Commands.IntakeCommands.intClawRotateMiddle;
+import Robot.Commands.IntakeCommands.intPivotObs;
 import Robot.Commands.IntakeCommands.intSetViperObs;
 import Robot.subsystems.intakeSubsystem;
 
@@ -15,7 +16,8 @@ public class intObs extends ParallelCommandGroup {
         addCommands(
                 new intClawPivotObs(this.subsystem),
                 new intClawRotateMiddle(this.subsystem),
-                new intSetViperObs(this.subsystem)
+                new intSetViperObs(this.subsystem),
+                new intPivotObs(this.subsystem)
         );
         addRequirements(this.subsystem);
 

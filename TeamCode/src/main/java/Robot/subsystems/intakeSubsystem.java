@@ -8,6 +8,9 @@ import static Robot.constants.intClawPivotTransfer;
 import static Robot.constants.intClawRotateLeft;
 import static Robot.constants.intClawRotateMiddle;
 import static Robot.constants.intClawRotateRight;
+import static Robot.constants.intPivotObs;
+import static Robot.constants.intPivotSub;
+import static Robot.constants.intPivotTransfer;
 import static Robot.constants.intViperObs;
 import static Robot.constants.intViperSub;
 import static Robot.constants.intViperTransfer;
@@ -51,8 +54,8 @@ public class intakeSubsystem extends SubsystemBase {
     private double Error = 0;
 
     public intakeSubsystem(HardwareMap hmap){
-        horzSlide = new cachingMotor(hmap.get(DcMotorEx.class, "vertSlide"), true);
-        horzEnc = new Motor(hmap, "vertSlide", Motor.GoBILDA.RPM_435).encoder;
+        horzSlide = new cachingMotor(hmap.get(DcMotorEx.class, "horzSlide"), true);
+        horzEnc = new Motor(hmap, "horzSlide", Motor.GoBILDA.RPM_435).encoder;
         horzEnc.reset();
         intClaw = new cachingServo(hmap.get(Servo.class,"intClaw"));
         intClawPivot = new cachingServo(hmap.get(Servo.class,"intClawPivot"));
@@ -106,6 +109,10 @@ public class intakeSubsystem extends SubsystemBase {
     public void setIntClawRotateRight(){
         this.intClawRotate.setServoPos(intClawRotateRight);
     }
+
+    public void setIntPivotSub(){this.intPivot.setServoPos(intPivotSub);}
+    public void setIntPivotObs(){this.intPivot.setServoPos(intPivotObs);}
+    public void setIntPivotTransfer(){this.intPivot.setServoPos(intPivotTransfer);}
 
     public void setViperZero(){
         this.horzSlideTargetPos = intViperZero;

@@ -42,11 +42,11 @@ import Robot.hardware.dualCachingServo;
 
 public class outtakeSubsystem extends SubsystemBase {
 
-    private cachingMotor vertSlide; // Port -
-    private Motor.Encoder vertEnc; // Port -
-    private cachingServo outClaw; // Port -
-    private cachingServo outClawPivot; // Port -
-    private dualCachingServo out4BarPivot; // Port -
+    private cachingMotor vertSlide; // Port 0
+    private Motor.Encoder vertEnc; // Port 0
+    private cachingServo outClaw; // Port 2
+    private cachingServo outClawPivot; // Port 5
+    private dualCachingServo out4BarPivot; // Ports 3(1)&4(2)
     private PIDController viper;
     private ElevatorFeedforward viperF;
     private double vertSlideTargetPos = 0, vertSlideTargetVelocity = 5, vertSlideTargetAcceleration =5;

@@ -16,6 +16,7 @@ public class constants{
     public static double intClawOpen = 0, intClawClose = 0;
     public static double intClawPivotSub = 0, intClawPivotObs = 0, intClawPivotTransfer = 0;
     public static double intClawRotateLeft = 0, intClawRotateMiddle = 0, intClawRotateRight = 0;
+    public static double intPivotSub = 0, intPivotObs = 0, intPivotTransfer = 0;
     public static double intViperZero = 0, intViperTransfer = 0, intViperSub = 0, intViperObs = 0;
 
     public enum opModeType{

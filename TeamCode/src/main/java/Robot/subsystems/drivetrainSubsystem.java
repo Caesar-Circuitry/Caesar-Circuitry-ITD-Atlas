@@ -21,7 +21,7 @@ public class drivetrainSubsystem extends SubsystemBase {
     public drivetrainSubsystem(HardwareMap hMap, Pose startingPose, boolean TeleOpEnabled){
         follower = new Follower(hMap);
         voltageIterator.setHmap(hMap);
-        limelight = hMap.get(Limelight3A.class,"LL");
+        //limelight = hMap.get(Limelight3A.class,"LL");
         Constants.setConstants(FConstants.class, LConstants.class);
         follower.setStartingPose(startingPose);
 
