@@ -27,10 +27,11 @@ public class ServoTester extends LinearOpMode {
             } else if (gamepad1.x) {
                 servo.setPosition(pos3);
             }
+            multipleTelemetry.addLine("gamepad1 b - pos1");
+            multipleTelemetry.addLine("gamepad1 a - pos2");
+            multipleTelemetry.addLine("gamepad1 x - pos3");
+            multipleTelemetry.update();
         }
-        multipleTelemetry.addLine("gamepad1 b - pos1");
-        multipleTelemetry.addLine("gamepad1 a - pos2");
-        multipleTelemetry.addLine("gamepad1 x - pos3");
-        multipleTelemetry.update();
+
     }
 }

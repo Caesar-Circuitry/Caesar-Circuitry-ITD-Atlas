@@ -1,5 +1,8 @@
 package Robot.subsystems;
 
+
+import static Robot.constants.iKD;
+import static Robot.constants.iKP;
 import static Robot.constants.intClawClose;
 import static Robot.constants.intClawOpen;
 import static Robot.constants.intClawPivotObs;
@@ -15,14 +18,6 @@ import static Robot.constants.intViperObs;
 import static Robot.constants.intViperSub;
 import static Robot.constants.intViperTransfer;
 import static Robot.constants.intViperZero;
-import static Robot.constants.oKA;
-import static Robot.constants.oKD;
-import static Robot.constants.oKG;
-import static Robot.constants.oKP;
-import static Robot.constants.oKS;
-import static Robot.constants.oKV;
-import static Robot.constants.outClawClose;
-import static Robot.constants.outClawOpen;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDController;
@@ -43,7 +38,6 @@ public class intakeSubsystem extends SubsystemBase {
     private cachingServo intClawRotate; // Port -
     private cachingServo intPivot; // Port -
     private PIDController viper;
-    private ElevatorFeedforward viperF;
     private double horzSlideTargetPos = 0, horzSlideTargetVelocity = 5, horzSlideTargetAcceleration =5;
     private double horzSlidePower=0;
     private double intClawPos=0;
@@ -61,8 +55,7 @@ public class intakeSubsystem extends SubsystemBase {
         intClawPivot = new cachingServo(hmap.get(Servo.class,"intClawPivot"));
         intClawRotate = new cachingServo(hmap.get(Servo.class,"intClawRotate"));
         intPivot = new cachingServo(hmap.get(Servo.class,"intPivot"));
-        viper = new PIDController(oKP,0,oKD);
-        viperF = new ElevatorFeedforward(oKS,oKG,oKV,oKA);
+        viper = new PIDController(iKP,0,iKD);
         horzSlide.enableVoltageCompensation();
     }
 
@@ -73,8 +66,7 @@ public class intakeSubsystem extends SubsystemBase {
             this.EncoderPos = 0;
         }
         horzSlide.setPower(
-                viper.calculate(EncoderPos/ ticksPerInch, horzSlideTargetPos) +
-                        viperF.calculate(horzSlideTargetVelocity,horzSlideTargetAcceleration)
+                viper.calculate(EncoderPos/ ticksPerInch, horzSlideTargetPos)
         );
     }
 

@@ -1,5 +1,7 @@
 package opModes.auto;
 
+import com.arcrobotics.ftclib.command.Command;
+import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
@@ -30,13 +32,13 @@ public class fiveSpecimenAuto extends CommandOpMode {
     Follower follower;
     private final ArrayList<PathChain> paths = new ArrayList<>();
     public void generatePushPath(){
-        follower.setStartingPose(new Pose(7, 81, Math.toRadians(180)));
+        follower.setStartingPose(new Pose(8, 66, Math.toRadians(180)));
         paths.add(
             follower.pathBuilder()
                 .addPath(
                     new BezierLine(
-                            new Point(7.000, 81.000, Point.CARTESIAN),
-                            new Point(39.000, 77.000, Point.CARTESIAN)
+                            new Point(8, 66, Point.CARTESIAN),
+                            new Point(28, 70.000, Point.CARTESIAN)
                     )
                 ).setConstantHeadingInterpolation(Math.toRadians(180))
                     .build()
@@ -349,44 +351,45 @@ public class fiveSpecimenAuto extends CommandOpMode {
         //robot = new robotContainer(hardwareMap, constants.opModeType.AUTONOMOUS);
         super.reset();
         //register(robot.drivetrainSubsystem, robot.intakeSubsystem, robot.outtakeSubsystem);
-        follower.setMaxPower(1);
+        follower.setMaxPower(.5);
 
-        generateIntakePath();
+        generatePushPath();
         schedule(
                 new RunCommand(() -> follower.update()),
+                //TODO replace wait Command with waitForPathFinished once done tuning
                 new SequentialCommandGroup(
-                        new FollowPath(follower,paths.get(0)),
+                        new FollowPath(follower,paths.get(0), true),
                         new WaitCommand(10000),
-                        new FollowPath(follower,paths.get(1)),
+                        new FollowPath(follower,paths.get(1), true),
                         new WaitCommand(1000),
-                        new FollowPath(follower,paths.get(2)),
+                        new FollowPath(follower,paths.get(2), true),
                         new WaitCommand(1000),
-                        new FollowPath(follower,paths.get(3)),
+                        new FollowPath(follower,paths.get(3), true),
                         new WaitCommand(1000),
-                        new FollowPath(follower,paths.get(4)),
+                        new FollowPath(follower,paths.get(4), true),
                         new WaitCommand(1000),
-                        new FollowPath(follower,paths.get(5)),
+                        new FollowPath(follower,paths.get(5), true),
                         new WaitCommand(1000),
-                        new FollowPath(follower,paths.get(6)),
+                        new FollowPath(follower,paths.get(6), true),
                         new WaitCommand(1000),
-                        new FollowPath(follower,paths.get(7)),
+                        new FollowPath(follower,paths.get(7), true),
                         new WaitCommand(1000),
-                        new FollowPath(follower,paths.get(8)),
+                        new FollowPath(follower,paths.get(8), true),
                         new WaitCommand(1000),
-                        new FollowPath(follower,paths.get(9)),
+                        new FollowPath(follower,paths.get(9), true),
                         new WaitCommand(1000),
-                        new FollowPath(follower,paths.get(10)),
+                        new FollowPath(follower,paths.get(10), true),
                         new WaitCommand(1000),
-                        new FollowPath(follower,paths.get(11)),
+                        new FollowPath(follower,paths.get(11), true),
                         new WaitCommand(1000),
-                        new FollowPath(follower,paths.get(12)),
+                        new FollowPath(follower,paths.get(12), true),
                         new WaitCommand(1000),
-                        new FollowPath(follower,paths.get(13)),
-                        new WaitCommand(1000),
-                        new FollowPath(follower,paths.get(14)),
-                        new WaitCommand(1000),
-                        new FollowPath(follower,paths.get(15)),
-                        new WaitCommand(1000)
+                        new FollowPath(follower,paths.get(13), true),
+                        new WaitCommand(1000)//,
+//                        new FollowPath(follower,paths.get(14), true),
+//                        new WaitCommand(1000),
+//                        new FollowPath(follower,paths.get(15), true),
+//                        new WaitCommand(1000)
                 )
         );
     }
@@ -397,4 +400,15 @@ public class fiveSpecimenAuto extends CommandOpMode {
 //        robot.periodic();
     }
 
+
+    public class waitForPathFinished extends CommandBase{
+        Follower follower;
+        public waitForPathFinished(Follower follower){
+            this.follower = follower;
+        }
+        @Override
+        public boolean isFinished(){
+            return follower.isBusy();
+        }
+    }
 }

@@ -1,11 +1,7 @@
 package Robot.subsystems;
 
-import static Robot.constants.iKA;
-import static Robot.constants.iKD;
-import static Robot.constants.iKG;
-import static Robot.constants.iKP;
-import static Robot.constants.iKS;
-import static Robot.constants.iKV;
+import static Robot.constants.oKD;
+import static Robot.constants.oKP;
 import static Robot.constants.out4BarPivot1HighBasket;
 import static Robot.constants.out4BarPivot1HighChamber;
 import static Robot.constants.out4BarPivot1LowBasket;
@@ -48,7 +44,6 @@ public class outtakeSubsystem extends SubsystemBase {
     private cachingServo outClawPivot; // Port 5
     private dualCachingServo out4BarPivot; // Ports 3(1)&4(2)
     private PIDController viper;
-    private ElevatorFeedforward viperF;
     private double vertSlideTargetPos = 0, vertSlideTargetVelocity = 5, vertSlideTargetAcceleration =5;
     private double EncoderPos = 0;
     private double ticksPerInch = 0;
@@ -59,8 +54,7 @@ public class outtakeSubsystem extends SubsystemBase {
         outClaw = new cachingServo(hmap.get(Servo.class,"outClaw"));
         outClawPivot = new cachingServo(hmap.get(Servo.class,"outClawPivot"));
         out4BarPivot= new dualCachingServo(hmap.get(Servo.class,"out4BarPivot1"), hmap.get(Servo.class,"out4BarPivot2"));
-        viper = new PIDController(iKP,0,iKD);
-        viperF = new ElevatorFeedforward(iKS,iKG,iKV,iKA);
+        viper = new PIDController(oKP,0,oKD);
         vertSlide.enableVoltageCompensation();
     }
 
@@ -71,9 +65,8 @@ public class outtakeSubsystem extends SubsystemBase {
             this.EncoderPos = 0;
         }
             vertSlide.setPower(
-                viper.calculate(EncoderPos/ ticksPerInch, vertSlideTargetPos) +
-                        viperF.calculate(vertSlideTargetVelocity,vertSlideTargetAcceleration)
-        );
+                viper.calculate(EncoderPos/ ticksPerInch, vertSlideTargetPos)
+            );
     }
 
     @Override
