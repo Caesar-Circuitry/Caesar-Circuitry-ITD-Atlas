@@ -1,4 +1,4 @@
-package Commands;
+package Robot.Commands;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.pedropathing.localization.Pose;
@@ -10,17 +10,20 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 
 import java.util.ArrayList;
 
-import Robot.Robot;
+
+import Robot.subsystems.drivetrainSubsystem;
+
 //Credit to Team 23511
 public class MT2_Relocalization extends CommandBase {
-    private final Robot robot;
     private final int neededReads;
     private final ArrayList<Position> reads = new ArrayList<>();
+    private final drivetrainSubsystem subsystem;
     ElapsedTime timer;
 
-    public MT2_Relocalization(Robot robot, int neededReads) {
-        this.robot = robot;
+    public MT2_Relocalization(drivetrainSubsystem subsystem, int neededReads) {
+        this.subsystem = subsystem;
         this.neededReads = neededReads;
+        addRequirements(subsystem);
     }
 
     @Override
@@ -31,20 +34,20 @@ public class MT2_Relocalization extends CommandBase {
             timer.reset();
         }
 
-        robot.getLimelight().updateRobotOrientation(
+        subsystem.getLimelight().updateRobotOrientation(
                 // Limelight needs heading in degrees
                 Math.toDegrees(
                         // Limelight needs -180 to 180 normalized angle (here its -PI to PI)
                         AngleUnit.normalizeRadians(
                                 // Actual heading
-                                robot.getFollower().getPose().getHeading()
+                                subsystem.getFollower().getPose().getHeading()
                                         // Compensate for limelight heading being off by 90 (0.5 pi) degrees compared to Pedro
                                         - Math.PI/2
                         )
                 )
         );
 
-        LLResult result = robot.getLimelight().getLatestResult();
+        LLResult result = subsystem.getLimelight().getLatestResult();
 
         if (result != null) {
             if (result.isValid()) {
@@ -88,7 +91,7 @@ public class MT2_Relocalization extends CommandBase {
             x += 72;
             y += 72;
 
-            robot.getFollower().setPose(new Pose(x , y, robot.getFollower().getPose().getHeading()));
+            subsystem.getFollower().setPose(new Pose(x , y, subsystem.getFollower().getPose().getHeading()));
         }
     }
 }
