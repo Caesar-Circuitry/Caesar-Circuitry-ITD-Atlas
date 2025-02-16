@@ -36,147 +36,175 @@ public class fiveSpecimenAuto extends CommandOpMode {
         paths.add(
             follower.pathBuilder()
                 .addPath(
-                    new BezierLine(
-                            new Point(8, 66, Point.CARTESIAN),
-                            new Point(28, 70.000, Point.CARTESIAN)
-                    )
-                ).setConstantHeadingInterpolation(Math.toRadians(180))
+                        //line 1
+                        new BezierLine(
+                                new Point(8.000, 66.000, Point.CARTESIAN),
+                                new Point(33.000, 77.000, Point.CARTESIAN)
+                        )
+                )
+                    .setConstantHeadingInterpolation(Math.toRadians(180))
                     .build()
         );
         paths.add(
                 follower.pathBuilder()
                         .addPath(
+                                //line 2
                                 new BezierCurve(
-                                        new Point(39.000, 77.000, Point.CARTESIAN),
+                                        new Point(33.000, 77.000, Point.CARTESIAN),
                                         new Point(23.000, 25.000, Point.CARTESIAN),
                                         new Point(62.000, 37.000, Point.CARTESIAN)
                                 )
-                        ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(0))
+                        )
+                        .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(0))
                         .build()
         );
         paths.add(
                 follower.pathBuilder()
                         .addPath(
+                                //line 3
                                 new BezierCurve(
                                         new Point(62.000, 37.000, Point.CARTESIAN),
                                         new Point(74.957, 21.469, Point.CARTESIAN),
                                         new Point(18.000, 24.000, Point.CARTESIAN)
                                 )
-                        ).setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                        )
+                        .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
                         .build()
         );
         paths.add(
                 follower.pathBuilder()
                         .addPath(
+                                //line 4
                                 new BezierCurve(
-                                        new Point(18.000, 24.000, Point.CARTESIAN),
-                                        new Point(94.239, 22.563, Point.CARTESIAN),
-                                        new Point(76.051, 9.161, Point.CARTESIAN),
-                                        new Point(19.000, 11.000, Point.CARTESIAN)
+                                        new Point(18.000, 24, Point.CARTESIAN),
+                                        new Point(80.000, 22.5, Point.CARTESIAN),
+                                        new Point(72.000, 7, Point.CARTESIAN),
+                                        new Point(19.000, 10, Point.CARTESIAN)
                                 )
-                        ).setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                        )
+                        .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
                         .build()
         );
         paths.add(
                 follower.pathBuilder()
                         .addPath(
+                                //line 5
                                 new BezierCurve(
                                         new Point(19.000, 11.000, Point.CARTESIAN),
-                                        new Point(94.375, 14.357, Point.CARTESIAN),
-                                        new Point(79.000, 5.000, Point.CARTESIAN),
+                                        new Point(80.000, 14.357, Point.CARTESIAN),
+                                        new Point(72.000, 5.000, Point.CARTESIAN),
                                         new Point(19.000, 7.000, Point.CARTESIAN)
                                 )
-                        ).setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                        )
+                        .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
                         .build()
         );
         paths.add(
                 follower.pathBuilder()
                         .addPath(
+                                //line 6
                                 new BezierLine(
                                         new Point(19.000, 7.000, Point.CARTESIAN),
-                                        new Point(19.000, 31.000, Point.CARTESIAN)
+                                        new Point(25.000, 39.000, Point.CARTESIAN)
                                 )
-                        ).setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(220))
+                        )
+                        .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(220))
                         .build()
         );
         paths.add(
                 follower.pathBuilder()
                         .addPath(
+                                //line 7
                                 new BezierLine(
-                                        new Point(19.000, 31.000, Point.CARTESIAN),
-                                        new Point(37.000, 59.000, Point.CARTESIAN)
+                                        new Point(25.000, 39.000, Point.CARTESIAN),
+                                        new Point(37.000, 62.000, Point.CARTESIAN)
                                 )
-                        ).setLinearHeadingInterpolation(Math.toRadians(220), Math.toRadians(0))
+                        )
+                        .setLinearHeadingInterpolation(Math.toRadians(220), Math.toRadians(180))
                         .build()
         );
         paths.add(
                 follower.pathBuilder()
                         .addPath(
+                                //line 8
                                 new BezierLine(
-                                        new Point(37.000, 59.000, Point.CARTESIAN),
-                                        new Point(19.000, 31.000, Point.CARTESIAN)
+                                        new Point(37.000, 62.000, Point.CARTESIAN),
+                                        new Point(25.000, 39.000, Point.CARTESIAN)
                                 )
-                        ).setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(220))
+                        )
+                        .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(220))
                         .build()
         );
         paths.add(
                 follower.pathBuilder()
                         .addPath(
+                                //line 9
                                 new BezierLine(
-                                        new Point(19.000, 31.000, Point.CARTESIAN),
-                                        new Point(37.000, 61.000, Point.CARTESIAN)
+                                        new Point(25.000, 39.000, Point.CARTESIAN),
+                                        new Point(37.000, 64.500, Point.CARTESIAN)
                                 )
-                        ) .setLinearHeadingInterpolation(Math.toRadians(220), Math.toRadians(0))
+                        )
+                        .setLinearHeadingInterpolation(Math.toRadians(220), Math.toRadians(180))
                         .build()
         );
         paths.add(
                 follower.pathBuilder()
                         .addPath(
+                                //line 10
                                 new BezierLine(
-                                        new Point(37.000, 61.000, Point.CARTESIAN),
-                                        new Point(19.000, 31.000, Point.CARTESIAN)
+                                        new Point(37.000, 64.500, Point.CARTESIAN),
+                                        new Point(25.000, 39.000, Point.CARTESIAN)
                                 )
-                        ).setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(220))
+                        )
+                        .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(220))
                         .build()
         );
         paths.add(
                 follower.pathBuilder()
                         .addPath(
+                                //line 11
                                 new BezierLine(
-                                        new Point(19.000, 31.000, Point.CARTESIAN),
-                                        new Point(37.000, 63.000, Point.CARTESIAN)
+                                        new Point(25.000, 39.000, Point.CARTESIAN),
+                                        new Point(37.000, 67.000, Point.CARTESIAN)
                                 )
-                        ).setLinearHeadingInterpolation(Math.toRadians(220), Math.toRadians(0))
+                        )
+                        .setLinearHeadingInterpolation(Math.toRadians(220), Math.toRadians(180))
                         .build()
         );
         paths.add(
                 follower.pathBuilder()
                         .addPath(
+                                //line 12
                                 new BezierLine(
-                                        new Point(37.000, 63.000, Point.CARTESIAN),
-                                        new Point(19.000, 31.000, Point.CARTESIAN)
+                                        new Point(37.000, 67.000, Point.CARTESIAN),
+                                        new Point(25.000, 39.000, Point.CARTESIAN)
                                 )
-                        ).setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(220))
+                        )
+                        .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(220))
                         .build()
         );
         paths.add(
                 follower.pathBuilder()
                         .addPath(
+                                //line 14
                                 new BezierLine(
-                                        new Point(19.000, 31.000, Point.CARTESIAN),
-                                        new Point(37.000, 65.000, Point.CARTESIAN)
+                                        new Point(25.000, 39.000, Point.CARTESIAN),
+                                        new Point(37.000, 69.500, Point.CARTESIAN)
                                 )
-                        ).setLinearHeadingInterpolation(Math.toRadians(220), Math.toRadians(0))
+                        )
+                        .setLinearHeadingInterpolation(Math.toRadians(220), Math.toRadians(180))
                         .build()
         );
         paths.add(
                 follower.pathBuilder()
                         .addPath(
+                                //line 15
                                 new BezierLine(
-                                        new Point(37.000, 65.000, Point.CARTESIAN),
-                                        new Point(12.000, 25.000, Point.CARTESIAN)
+                                        new Point(37.000, 69.500, Point.CARTESIAN),
+                                        new Point(17.000, 12.000, Point.CARTESIAN)
                                 )
-                        ).setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
+                        )
+                        .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(180))
                         .build()
         );
     }
@@ -351,7 +379,7 @@ public class fiveSpecimenAuto extends CommandOpMode {
         //robot = new robotContainer(hardwareMap, constants.opModeType.AUTONOMOUS);
         super.reset();
         //register(robot.drivetrainSubsystem, robot.intakeSubsystem, robot.outtakeSubsystem);
-        follower.setMaxPower(.5);
+        follower.setMaxPower(1);
 
         generatePushPath();
         schedule(
@@ -359,33 +387,33 @@ public class fiveSpecimenAuto extends CommandOpMode {
                 //TODO replace wait Command with waitForPathFinished once done tuning
                 new SequentialCommandGroup(
                         new FollowPath(follower,paths.get(0), true),
-                        new WaitCommand(10000),
+                        new waitForPathFinished(follower),
                         new FollowPath(follower,paths.get(1), true),
-                        new WaitCommand(1000),
+                        new waitForPathFinished(follower),
                         new FollowPath(follower,paths.get(2), true),
-                        new WaitCommand(1000),
+                        new waitForPathFinished(follower),
                         new FollowPath(follower,paths.get(3), true),
-                        new WaitCommand(1000),
+                        new waitForPathFinished(follower),
                         new FollowPath(follower,paths.get(4), true),
-                        new WaitCommand(1000),
+                        new waitForPathFinished(follower),
                         new FollowPath(follower,paths.get(5), true),
-                        new WaitCommand(1000),
+                        new waitForPathFinished(follower),
                         new FollowPath(follower,paths.get(6), true),
-                        new WaitCommand(1000),
+                        new waitForPathFinished(follower),
                         new FollowPath(follower,paths.get(7), true),
-                        new WaitCommand(1000),
+                        new waitForPathFinished(follower),
                         new FollowPath(follower,paths.get(8), true),
-                        new WaitCommand(1000),
+                        new waitForPathFinished(follower),
                         new FollowPath(follower,paths.get(9), true),
-                        new WaitCommand(1000),
+                        new waitForPathFinished(follower),
                         new FollowPath(follower,paths.get(10), true),
-                        new WaitCommand(1000),
+                        new waitForPathFinished(follower),
                         new FollowPath(follower,paths.get(11), true),
-                        new WaitCommand(1000),
+                        new waitForPathFinished(follower),
                         new FollowPath(follower,paths.get(12), true),
-                        new WaitCommand(1000),
+                        new waitForPathFinished(follower),
                         new FollowPath(follower,paths.get(13), true),
-                        new WaitCommand(1000)//,
+                        new waitForPathFinished(follower)//,
 //                        new FollowPath(follower,paths.get(14), true),
 //                        new WaitCommand(1000),
 //                        new FollowPath(follower,paths.get(15), true),

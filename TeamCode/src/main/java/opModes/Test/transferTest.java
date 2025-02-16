@@ -1,6 +1,7 @@
 package opModes.Test;
 
 import static Robot.constants.iKD;
+import static Robot.constants.iKF;
 import static Robot.constants.iKP;
 import static Robot.constants.intClawClose;
 import static Robot.constants.intClawOpen;
@@ -38,6 +39,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
@@ -69,21 +71,26 @@ public class transferTest extends LinearOpMode {
     private Motor.Encoder vertMotorEnc; // Port -
     public static double vertSlideTargetPos = 0;
     public static double horzSlideTargetPos=0;
-
+    private double voltageSensorVoltage;
     public static double vertEncoderPos = 0, horzEncoderPos = 0;
     public static double vertTicksPerInch = 204.6, horzTickPerInch = 5.8;
-    private PIDFController viper;
+    private PIDFController vertViper;
+    private PIDFController horzViper;
     public static double oKF = 0.015;
     private transfer TransferSequence = transfer.TRANSFER;
     private claw clawState = claw.CLAW_OPEN;
     public static double maxCurrent = 5;//9.2Amps is stall current
     private List<LynxModule> allHubs;
+    private ElapsedTime voltageTimer;
+    private double prevHorzMotorPower=0,HorzMotorPower=0,prevVertMotorPower=0,VertMotorPower=0;
     @Override
     public void runOpMode() throws InterruptedException {
         allHubs = hardwareMap.getAll(LynxModule.class);
         for (LynxModule hub : allHubs) {
             hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
         }
+        voltageTimer = new ElapsedTime();
+        voltageTimer.reset();
         horzSlide = hardwareMap.get(DcMotorEx.class,"horzSlide");
         horzEnc = new Motor(hardwareMap, "horzSlide", Motor.GoBILDA.RPM_435).encoder;
         horzEnc.reset();
@@ -97,10 +104,11 @@ public class transferTest extends LinearOpMode {
         intPivot = hardwareMap.get(Servo.class,"intPivot");
         vertMotor = hardwareMap.get(DcMotorEx.class,vertMotorName);
         vertMotorEnc = new Motor(hardwareMap,vertMotorName, Motor.GoBILDA.RPM_435).encoder;
-        viper = new PIDFController(oKP,0,oKD, oKF);
-        viper = new PIDController(iKP,0,iKD);
+        vertViper = new PIDFController(oKP,0,oKD, oKF);
+        horzViper = new PIDController(iKP,0,iKD);
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
         waitForStart();
+        voltageSensorVoltage = voltageSensor.getVoltage();
         while (opModeIsActive()){
             if(gamepad1.b) {
                 TransferSequence = transfer.TRANSFER;
@@ -129,6 +137,10 @@ public class transferTest extends LinearOpMode {
             multipleTelemetry.addLine("gamepad1 x - high chamber");
             multipleTelemetry.addLine("gamepad1 rt - claw open");
             multipleTelemetry.addLine("gamepad1 lt - claw close");
+            multipleTelemetry.addData("Encoder Pos", vertEncoderPos);
+            multipleTelemetry.addData("vertCurrent", vertMotor.getCurrent(CurrentUnit.AMPS));
+            multipleTelemetry.addData("horzCurrent", horzSlide.getCurrent(CurrentUnit.AMPS));
+            multipleTelemetry.addData("horzPower",HorzMotorPower);
             multipleTelemetry.update();
             for (LynxModule hub : allHubs) {
                 hub.clearBulkCache();
@@ -145,13 +157,17 @@ public class transferTest extends LinearOpMode {
             this.vertEncoderPos = 0;
             this.horzEncoderPos = 0;
         }
-        double voltageSensorVoltage = voltageSensor.getVoltage();
-        vertMotor.setPower(
-                (viper.calculate(horzEncoderPos/ vertTicksPerInch, vertSlideTargetPos)*voltage)/voltageSensorVoltage
-        );
-        horzSlide.setPower(
-                (viper.calculate(horzEncoderPos/ horzTickPerInch, horzSlideTargetPos)*voltage)/voltageSensorVoltage
-        );
+        if(voltageTimer.seconds()>=5) {
+            voltageSensorVoltage = voltageSensor.getVoltage();
+            voltageTimer.reset();
+        }
+        VertMotorPower = (vertViper.calculate(vertEncoderPos/ vertTicksPerInch, vertSlideTargetPos)*voltage)/voltageSensorVoltage;
+        if(VertMotorPower > prevVertMotorPower + .01 || VertMotorPower< prevVertMotorPower -.01 ) {
+            vertMotor.setPower(VertMotorPower);
+            prevVertMotorPower = VertMotorPower;
+        }
+        horzSlide.setPower((horzViper.calculate(horzEncoderPos/ horzTickPerInch, horzSlideTargetPos)*voltage)/voltageSensorVoltage);
+//            prevHorzMotorPower = HorzMotorPower;
     }
     private void clawState(){
         switch (clawState){
