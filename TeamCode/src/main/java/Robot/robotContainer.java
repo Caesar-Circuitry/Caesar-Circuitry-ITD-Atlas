@@ -1,16 +1,16 @@
 package Robot;
 
 import com.arcrobotics.ftclib.command.Robot;
-import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.pedropathing.localization.Pose;
 import com.qualcomm.hardware.lynx.LynxModule;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import java.util.List;
 
-import Robot.constants.*;
-import Robot.subsystems.*;
+import Robot.constants.opModeType;
+import Robot.subsystems.drivetrainSubsystem;
+import Robot.subsystems.intakeSubsystem;
+import Robot.subsystems.outtakeSubsystem;
 
 public class robotContainer extends Robot {
     public drivetrainSubsystem drivetrainSubsystem;
@@ -34,9 +34,8 @@ public class robotContainer extends Robot {
         }else{
             this.drivetrainSubsystem = new drivetrainSubsystem(hmap, robotPose, false);
         }
-
-        this.intakeSubsystem = new intakeSubsystem(hmap);
-        this.outtakeSubsystem = new outtakeSubsystem(hmap);
+        this.intakeSubsystem = new intakeSubsystem(hmap, this);
+        this.outtakeSubsystem = new outtakeSubsystem(hmap, this);
     }
 
 
@@ -47,6 +46,10 @@ public class robotContainer extends Robot {
         for (LynxModule hub : allHubs) {
             hub.clearBulkCache();
         }
+    }
+
+    public double getVoltage(){
+        return drivetrainSubsystem.follower.getVoltage();
     }
 
 }

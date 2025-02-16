@@ -7,11 +7,6 @@ import static Robot.constants.out4BarPivot1HighChamber;
 import static Robot.constants.out4BarPivot1LowBasket;
 import static Robot.constants.out4BarPivot1LowChamber;
 import static Robot.constants.out4BarPivot1Transfer;
-import static Robot.constants.out4BarPivot2HighBasket;
-import static Robot.constants.out4BarPivot2HighChamber;
-import static Robot.constants.out4BarPivot2LowBasket;
-import static Robot.constants.out4BarPivot2LowChamber;
-import static Robot.constants.out4BarPivot2Transfer;
 import static Robot.constants.outClawClose;
 import static Robot.constants.outClawOpen;
 import static Robot.constants.outClawPivotBasket;
@@ -26,15 +21,16 @@ import static Robot.constants.outViperZero;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDController;
-import com.arcrobotics.ftclib.controller.wpilibcontroller.ElevatorFeedforward;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+
 import Robot.hardware.cachingMotor;
 import Robot.hardware.cachingServo;
-import Robot.hardware.dualCachingServo;
+import Robot.robotContainer;
 
 public class outtakeSubsystem extends SubsystemBase {
 
@@ -42,20 +38,25 @@ public class outtakeSubsystem extends SubsystemBase {
     private Motor.Encoder vertEnc; // Port 0
     private cachingServo outClaw; // Port 2
     private cachingServo outClawPivot; // Port 5
-    private dualCachingServo out4BarPivot; // Ports 3(1)&4(2)
+    private cachingServo out4BarPivot; // Ports 3(1)
     private PIDController viper;
-    private double vertSlideTargetPos = 0, vertSlideTargetVelocity = 5, vertSlideTargetAcceleration =5;
+    private double vertSlideTargetPos = 0;
     private double EncoderPos = 0;
-    private double ticksPerInch = 0;
-    public outtakeSubsystem(HardwareMap hmap){
-        vertSlide = new cachingMotor(hmap.get(DcMotorEx.class, "vertSlide"), true);
+    private double ticksPerInch = 204.6;
+    private final robotContainer robot;
+
+    public outtakeSubsystem(HardwareMap hmap, robotContainer robot){
+        vertSlide = new cachingMotor(hmap.get(DcMotorEx.class, "vertSlide"));
         vertEnc = new Motor(hmap, "vertSlide", Motor.GoBILDA.RPM_435).encoder;
+        //decides amount of current before it resets
+        vertSlide.getMotor().setCurrentAlert(7.00, CurrentUnit.AMPS);
+
         vertEnc.reset();
         outClaw = new cachingServo(hmap.get(Servo.class,"outClaw"));
         outClawPivot = new cachingServo(hmap.get(Servo.class,"outClawPivot"));
-        out4BarPivot= new dualCachingServo(hmap.get(Servo.class,"out4BarPivot1"), hmap.get(Servo.class,"out4BarPivot2"));
+        out4BarPivot= new cachingServo(hmap.get(Servo.class,"out4BarPivot1"));
         viper = new PIDController(oKP,0,oKD);
-        vertSlide.enableVoltageCompensation();
+        this.robot = robot;
     }
 
     private void setFeedBackPower(){
@@ -65,8 +66,11 @@ public class outtakeSubsystem extends SubsystemBase {
             this.EncoderPos = 0;
         }
             vertSlide.setPower(
-                viper.calculate(EncoderPos/ ticksPerInch, vertSlideTargetPos)
+                    (viper.calculate(EncoderPos/ ticksPerInch, vertSlideTargetPos) * robot.getVoltage())/12
             );
+        if (vertSlide.getMotor().isOverCurrent()){
+            vertEnc.reset();
+        }
     }
 
     @Override
@@ -92,19 +96,19 @@ public class outtakeSubsystem extends SubsystemBase {
     }
 
     public void setOut4BarPivotTransfer(){
-        this.out4BarPivot.setPos(out4BarPivot1Transfer,out4BarPivot2Transfer);
+        this.out4BarPivot.setServoPos(out4BarPivot1Transfer);
     }
     public void setOut4BarPivotHighChamber(){
-        this.out4BarPivot.setPos(out4BarPivot1HighChamber,out4BarPivot2HighChamber);
+        this.out4BarPivot.setServoPos(out4BarPivot1HighChamber);
     }
     public void setOut4BarPivotLowChamber(){
-        this.out4BarPivot.setPos(out4BarPivot1LowChamber,out4BarPivot2LowChamber);
+        this.out4BarPivot.setServoPos(out4BarPivot1LowChamber);
     }
     public void setOut4BarPivotLowBasket(){
-        this.out4BarPivot.setPos(out4BarPivot1LowBasket, out4BarPivot2LowBasket);
+        this.out4BarPivot.setServoPos(out4BarPivot1LowBasket);
     }
     public void setOut4BarPivotHighBasket(){
-        this.out4BarPivot.setPos(out4BarPivot1HighBasket, out4BarPivot2HighBasket);
+        this.out4BarPivot.setServoPos(out4BarPivot1HighBasket);
     }
     public void setVertSlideZero(){
         this.vertSlideTargetPos = outViperZero;

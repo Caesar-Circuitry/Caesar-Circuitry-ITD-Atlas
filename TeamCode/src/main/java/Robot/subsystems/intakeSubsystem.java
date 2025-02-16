@@ -21,7 +21,6 @@ import static Robot.constants.intViperZero;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDController;
-import com.arcrobotics.ftclib.controller.wpilibcontroller.ElevatorFeedforward;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -29,6 +28,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import Robot.hardware.cachingMotor;
 import Robot.hardware.cachingServo;
+import Robot.robotContainer;
 
 public class intakeSubsystem extends SubsystemBase {
     private cachingMotor horzSlide; // Port -
@@ -38,17 +38,13 @@ public class intakeSubsystem extends SubsystemBase {
     private cachingServo intClawRotate; // Port -
     private cachingServo intPivot; // Port -
     private PIDController viper;
-    private double horzSlideTargetPos = 0, horzSlideTargetVelocity = 5, horzSlideTargetAcceleration =5;
-    private double horzSlidePower=0;
-    private double intClawPos=0;
-    private double intClawPivotPos=0;
-    private double intPivotPos = 0;
+    private double horzSlideTargetPos = 0;
     private double EncoderPos = 0;
-    private double ticksPerInch = 0;
-    private double Error = 0;
+    private double ticksPerInch = 5.8;
+    private final robotContainer robot;
 
-    public intakeSubsystem(HardwareMap hmap){
-        horzSlide = new cachingMotor(hmap.get(DcMotorEx.class, "horzSlide"), true);
+    public intakeSubsystem(HardwareMap hmap, robotContainer robot){
+        horzSlide = new cachingMotor(hmap.get(DcMotorEx.class, "horzSlide"));
         horzEnc = new Motor(hmap, "horzSlide", Motor.GoBILDA.RPM_435).encoder;
         horzEnc.reset();
         intClaw = new cachingServo(hmap.get(Servo.class,"intClaw"));
@@ -56,7 +52,7 @@ public class intakeSubsystem extends SubsystemBase {
         intClawRotate = new cachingServo(hmap.get(Servo.class,"intClawRotate"));
         intPivot = new cachingServo(hmap.get(Servo.class,"intPivot"));
         viper = new PIDController(iKP,0,iKD);
-        horzSlide.enableVoltageCompensation();
+        this.robot = robot;
     }
 
     private void setFeedBackPower(){
@@ -66,7 +62,7 @@ public class intakeSubsystem extends SubsystemBase {
             this.EncoderPos = 0;
         }
         horzSlide.setPower(
-                viper.calculate(EncoderPos/ ticksPerInch, horzSlideTargetPos)
+                (viper.calculate(EncoderPos/ ticksPerInch, horzSlideTargetPos) * robot.getVoltage())/12
         );
     }
 

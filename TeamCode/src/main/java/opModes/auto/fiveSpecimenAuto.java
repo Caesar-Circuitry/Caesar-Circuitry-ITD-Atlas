@@ -1,17 +1,13 @@
 package opModes.auto;
 
-import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.WaitCommand;
 import com.pedropathing.commands.FollowPath;
 import com.pedropathing.follower.Follower;
-import com.pedropathing.follower.FollowerConstants;
-import com.pedropathing.localization.Localizer;
 import com.pedropathing.localization.Pose;
-import com.pedropathing.localization.localizers.ThreeWheelIMULocalizer;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.PathChain;
@@ -21,6 +17,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import java.util.ArrayList;
 
+import Robot.Commands.newScoringCommands.scoringHighChamber;
 import Robot.constants;
 import Robot.robotContainer;
 import pedroPathing.constants.FConstants;
@@ -28,7 +25,7 @@ import pedroPathing.constants.LConstants;
 
 @Autonomous
 public class fiveSpecimenAuto extends CommandOpMode {
-    //robotContainer robot;
+    robotContainer robot;
     Follower follower;
     private final ArrayList<PathChain> paths = new ArrayList<>();
     public void generatePushPath(){
@@ -213,17 +210,20 @@ public class fiveSpecimenAuto extends CommandOpMode {
     public void initialize() {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower =new Follower(hardwareMap);
-        //robot = new robotContainer(hardwareMap, constants.opModeType.AUTONOMOUS);
+        robot = new robotContainer(hardwareMap, constants.opModeType.AUTONOMOUS);
         super.reset();
-        //register(robot.drivetrainSubsystem, robot.intakeSubsystem, robot.outtakeSubsystem);
+        register(robot.drivetrainSubsystem, robot.intakeSubsystem, robot.outtakeSubsystem);
         follower.setMaxPower(1);
 
         generatePushPath();
         schedule(
-                new RunCommand(() -> follower.update()),
+                new RunCommand(() -> robot.outtakeSubsystem.periodic()),
                 //TODO replace wait Command with waitForPathFinished once done tuning
                 new SequentialCommandGroup(
+                        new ParallelCommandGroup(
                         new FollowPath(follower,paths.get(0), true),
+                        new scoringHighChamber(robot.outtakeSubsystem, robot.intakeSubsystem)
+                                ),
                         new waitForPathFinished(follower),
                         new FollowPath(follower,paths.get(1), true),
                         new waitForPathFinished(follower),

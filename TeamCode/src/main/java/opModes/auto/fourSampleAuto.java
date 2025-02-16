@@ -1,17 +1,12 @@
 package opModes.auto;
 
-import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.WaitCommand;
 import com.pedropathing.commands.FollowPath;
 import com.pedropathing.follower.Follower;
-import com.pedropathing.follower.FollowerConstants;
-import com.pedropathing.localization.Localizer;
 import com.pedropathing.localization.Pose;
-import com.pedropathing.localization.localizers.ThreeWheelIMULocalizer;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.PathChain;
@@ -21,8 +16,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import java.util.ArrayList;
 
-import Robot.constants;
-import Robot.robotContainer;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
@@ -52,6 +45,7 @@ public class fourSampleAuto extends CommandOpMode {
                               new BezierLine(
                                   new Point(17.000, 128.000, Point.CARTESIAN),
                                   new Point(22.000, 128.000, Point.CARTESIAN)
+                        )
                         )
                         .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(-25))
                         .build()
@@ -126,7 +120,7 @@ public class fourSampleAuto extends CommandOpMode {
                                 new Point(60.000, 96.000, Point.CARTESIAN)
                               )
                             )
-                            .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(90));
+                            .setLinearHeadingInterpolation(Math.toRadians(-45), Math.toRadians(90))
                             .build()
         );
     }
