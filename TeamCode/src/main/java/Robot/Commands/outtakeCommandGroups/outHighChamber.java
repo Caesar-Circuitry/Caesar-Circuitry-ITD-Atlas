@@ -1,6 +1,7 @@
 package Robot.Commands.outtakeCommandGroups;
 
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 
 import Robot.Commands.outtakeCommands.out4BarPivotHighBasket;
 import Robot.Commands.outtakeCommands.out4BarPivotHighChamber;
@@ -11,7 +12,7 @@ import Robot.Commands.outtakeCommands.outViperHighChamber;
 import Robot.subsystems.outtakeSubsystem;
 
 
-public class outHighChamber extends ParallelCommandGroup {
+public class outHighChamber extends SequentialCommandGroup {
     private outtakeSubsystem subsystem;
     public outHighChamber(outtakeSubsystem subsystem){
         this.subsystem = subsystem;

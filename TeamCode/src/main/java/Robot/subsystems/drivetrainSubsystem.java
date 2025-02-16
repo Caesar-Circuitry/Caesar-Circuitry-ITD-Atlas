@@ -3,6 +3,7 @@ package Robot.subsystems;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
+import com.pedropathing.localization.localizers.ThreeWheelLocalizer;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.util.Constants;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
@@ -16,13 +17,12 @@ public class drivetrainSubsystem extends SubsystemBase {
 
     public final Follower follower;
     public PathChain pathChain;
-    private Limelight3A limelight;
 
     public drivetrainSubsystem(HardwareMap hMap, Pose startingPose, boolean TeleOpEnabled){
+        Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hMap);
         voltageIterator.setHmap(hMap);
         //limelight = hMap.get(Limelight3A.class,"LL");
-        Constants.setConstants(FConstants.class, LConstants.class);
         follower.setStartingPose(startingPose);
 
         if (TeleOpEnabled){
@@ -33,7 +33,6 @@ public class drivetrainSubsystem extends SubsystemBase {
     @Override
     public void periodic(){
         follower.update();
-        follower.updatePose();
         voltageIterator.periodic();
     }
 
@@ -60,9 +59,6 @@ public class drivetrainSubsystem extends SubsystemBase {
         follower.setTeleOpMovementVectors(0,0,0,robotCentric);
     }
 
-    public Limelight3A getLimelight(){
-        return limelight;
-    }
 
     public Follower getFollower() {
         return follower;

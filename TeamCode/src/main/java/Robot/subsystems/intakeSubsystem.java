@@ -68,6 +68,9 @@ public class intakeSubsystem extends SubsystemBase {
         horzSlide.setPower(
                 viper.calculate(EncoderPos/ ticksPerInch, horzSlideTargetPos)
         );
+        if (horzSlide.isOverCurrent()){
+            horzEnc.reset();
+        }
     }
 
     @Override

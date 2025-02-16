@@ -38,5 +38,8 @@ public class cachingMotor {
     public void disableVoltageCompensation(){
         this.voltageCompensation = false;
     }
+    public boolean isOverCurrent(){
+        return motor.isOverCurrent();
+    }
 
 }

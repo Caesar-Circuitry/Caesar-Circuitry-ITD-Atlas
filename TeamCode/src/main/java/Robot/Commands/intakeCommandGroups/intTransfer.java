@@ -1,6 +1,7 @@
 package Robot.Commands.intakeCommandGroups;
 
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 
 import Robot.Commands.IntakeCommands.intClawPivotObs;
 import Robot.Commands.IntakeCommands.intClawPivotTransfer;
@@ -11,7 +12,7 @@ import Robot.Commands.IntakeCommands.intPivotTransfer;
 import Robot.subsystems.intakeSubsystem;
 
 
-public class intTransfer extends ParallelCommandGroup {
+public class intTransfer extends SequentialCommandGroup {
     private intakeSubsystem subsystem;
     public intTransfer(intakeSubsystem subsystem){
         this.subsystem = subsystem;

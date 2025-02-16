@@ -3,6 +3,8 @@ package opModes.auto;
 import com.arcrobotics.ftclib.command.Command;
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.InstantCommand;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.WaitCommand;
@@ -18,18 +20,39 @@ import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import java.util.ArrayList;
 
+import Robot.Commands.intakeCommandGroups.intTransfer;
+import Robot.Commands.outtakeCommandGroups.outHighChamber;
+import Robot.Commands.scoringCommandGroups.scoringHighChamber;
 import Robot.constants;
 import Robot.robotContainer;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
 @Autonomous
-public class fiveSpecimenAuto extends CommandOpMode {
-    //robotContainer robot;
+public class fiveSpecimenAuto extends LinearOpMode {
     Follower follower;
+    private enum auto{
+        ZERO,
+        ONE,
+        TWO,
+        THREE,
+        FOUR,
+        FIVE,
+        SIX,
+        SEVEN,
+        EIGHT,
+        NINE,
+        TEN,
+        ELEVEN,
+        TWELVE,
+        THIRTEEN,
+        END
+    }
+    private auto Auto = auto.ZERO;
     private final ArrayList<PathChain> paths = new ArrayList<>();
     public void generatePushPath(){
         follower.setStartingPose(new Pose(8, 66, Math.toRadians(180)));
@@ -208,235 +231,102 @@ public class fiveSpecimenAuto extends CommandOpMode {
                         .build()
         );
     }
-    public void generateIntakePath(){
-        follower.setStartingPose(new Pose(7, 81, Math.toRadians(180)));
-        paths.add(
-                follower.pathBuilder()
-                        .addPath(
-                                new BezierLine(
-                                        new Point(7.000, 81.000, Point.CARTESIAN),
-                                        new Point(39.000, 77.000, Point.CARTESIAN)
-                                )
-                        ).setConstantHeadingInterpolation(Math.toRadians(180))
-                        .build()
-        );
-        paths.add(
-                follower.pathBuilder()
-                        .addPath(
-                                new BezierLine(
-                                        new Point(39.000, 77.000, Point.CARTESIAN),
-                                        new Point(25.000, 39.000, Point.CARTESIAN)
-                                )
-                        ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(-40))
-                        .build()
-        );
-        paths.add(
-                follower.pathBuilder()
-                        .addPath(
-                                new BezierLine(
-                                        new Point(25.000, 39.000, Point.CARTESIAN),
-                                        new Point(32.000, 33.000, Point.CARTESIAN)
-                                )
-                        ).setConstantHeadingInterpolation(Math.toRadians(-40))
-                        .build()
-        );
-        paths.add(
-                follower.pathBuilder()
-                        .addPath(
-                                new BezierLine(
-                                        new Point(32.000, 33.000, Point.CARTESIAN),
-                                        new Point(32.000, 33.000, Point.CARTESIAN)
-                                )
-                        ).setLinearHeadingInterpolation(Math.toRadians(-40), Math.toRadians(-135))
-                        .build()
-        );
-        paths.add(
-                follower.pathBuilder()
-                        .addPath(
-                                new BezierLine(
-                                        new Point(32.000, 33.000, Point.CARTESIAN),
-                                        new Point(32.000, 22.000, Point.CARTESIAN)
-                                )
-                        ).setLinearHeadingInterpolation(Math.toRadians(-135), Math.toRadians(-40))
-                        .build()
-        );
-        paths.add(
-                follower.pathBuilder()
-                        .addPath(
-                                new BezierLine(
-                                        new Point(32.000, 22.000, Point.CARTESIAN),
-                                        new Point(32.000, 22.000, Point.CARTESIAN)
-                                )
-                        ).setLinearHeadingInterpolation(Math.toRadians(-40), Math.toRadians(-140))
-                        .build()
-        );
-        paths.add(
-                follower.pathBuilder()
-                        .addPath(
-                                new BezierLine(
-                                        new Point(32.000, 22.000, Point.CARTESIAN),
-                                        new Point(32.000, 13.000, Point.CARTESIAN)
-                                )
-                        ).setLinearHeadingInterpolation(Math.toRadians(-140), Math.toRadians(-40))
-                        .build()
-        );
-        paths.add(
-                follower.pathBuilder()
-                        .addPath(
-                                new BezierLine(
-                                        new Point(32.000, 13.000, Point.CARTESIAN),
-                                        new Point(32.000, 13.000, Point.CARTESIAN)
-                                )
-                        ).setLinearHeadingInterpolation(Math.toRadians(-40), Math.toRadians(-140))
-                        .build()
-        );
-        paths.add(
-                follower.pathBuilder()
-                        .addPath(
-                                new BezierLine(
-                                        new Point(32.000, 13.000, Point.CARTESIAN),
-                                        new Point(21.000, 34.000, Point.CARTESIAN)
-                                )
-                        ).setLinearHeadingInterpolation(Math.toRadians(-140), Math.toRadians(-135))
-                        .build()
-        );
-        paths.add(
-                follower.pathBuilder()
-                        .addPath(
-                                new BezierLine(
-                                        new Point(21.000, 34.000, Point.CARTESIAN),
-                                        new Point(38.000, 60.000, Point.CARTESIAN)
-                                )
-                        ).setLinearHeadingInterpolation(Math.toRadians(-135), Math.toRadians(180))
-                        .build()
-        );
-        paths.add(
-                follower.pathBuilder()
-                        .addPath(
-                                new BezierLine(
-                                        new Point(38.000, 60.000, Point.CARTESIAN),
-                                        new Point(21.000, 34.000, Point.CARTESIAN)
-                                )
-                        ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(-135))
-                        .build()
-        );
-        paths.add(
-                follower.pathBuilder()
-                        .addPath(
-                                new BezierLine(
-                                        new Point(21.000, 34.000, Point.CARTESIAN),
-                                        new Point(38.000, 61.000, Point.CARTESIAN)
-                                )
-                        ).setLinearHeadingInterpolation(Math.toRadians(-135), Math.toRadians(180))
-                        .build()
-        );
-        paths.add(
-                follower.pathBuilder()
-                        .addPath(
-                                new BezierLine(
-                                        new Point(38.000, 61.000, Point.CARTESIAN),
-                                        new Point(21.000, 34.000, Point.CARTESIAN)
-                                )
-                        ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(-135))
-                        .build()
-        );
-        paths.add(
-                follower.pathBuilder()
-                        .addPath(
-                                new BezierLine(
-                                        new Point(21.000, 34.000, Point.CARTESIAN),
-                                        new Point(38.000, 62.000, Point.CARTESIAN)
-                                )
-                        ).setLinearHeadingInterpolation(Math.toRadians(-135), Math.toRadians(180))
-                        .build()
-        );
-        paths.add(
-                follower.pathBuilder()
-                        .addPath(
-                                new BezierLine(
-                                        new Point(38.000, 62.000, Point.CARTESIAN),
-                                        new Point(21.000, 34.000, Point.CARTESIAN)
-                                )
-                        ).setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(-135))
-                        .build()
-        );
-        paths.add(
-                follower.pathBuilder()
-                        .addPath(
-                                new BezierLine(
-                                        new Point(21.000, 34.000, Point.CARTESIAN),
-                                        new Point(38.000, 63.000, Point.CARTESIAN)
-                                )
-                        ).setLinearHeadingInterpolation(Math.toRadians(-135), Math.toRadians(180))
-                        .build()
-        );
 
-    }
     @Override
-    public void initialize() {
-        Constants.setConstants(FConstants.class, LConstants.class);
-        follower =new Follower(hardwareMap);
-        //robot = new robotContainer(hardwareMap, constants.opModeType.AUTONOMOUS);
-        super.reset();
-        //register(robot.drivetrainSubsystem, robot.intakeSubsystem, robot.outtakeSubsystem);
+    public void runOpMode() throws InterruptedException {
+        Constants.setConstants(FConstants.class,LConstants.class);
+        follower = new Follower(hardwareMap);
         follower.setMaxPower(1);
-
         generatePushPath();
-        schedule(
-                new RunCommand(() -> follower.update()),
-                //TODO replace wait Command with waitForPathFinished once done tuning
-                new SequentialCommandGroup(
-                        new FollowPath(follower,paths.get(0), true),
-                        new waitForPathFinished(follower),
-                        new FollowPath(follower,paths.get(1), true),
-                        new waitForPathFinished(follower),
-                        new FollowPath(follower,paths.get(2), true),
-                        new waitForPathFinished(follower),
-                        new FollowPath(follower,paths.get(3), true),
-                        new waitForPathFinished(follower),
-                        new FollowPath(follower,paths.get(4), true),
-                        new waitForPathFinished(follower),
-                        new FollowPath(follower,paths.get(5), true),
-                        new waitForPathFinished(follower),
-                        new FollowPath(follower,paths.get(6), true),
-                        new waitForPathFinished(follower),
-                        new FollowPath(follower,paths.get(7), true),
-                        new waitForPathFinished(follower),
-                        new FollowPath(follower,paths.get(8), true),
-                        new waitForPathFinished(follower),
-                        new FollowPath(follower,paths.get(9), true),
-                        new waitForPathFinished(follower),
-                        new FollowPath(follower,paths.get(10), true),
-                        new waitForPathFinished(follower),
-                        new FollowPath(follower,paths.get(11), true),
-                        new waitForPathFinished(follower),
-                        new FollowPath(follower,paths.get(12), true),
-                        new waitForPathFinished(follower),
-                        new FollowPath(follower,paths.get(13), true),
-                        new waitForPathFinished(follower)//,
-//                        new FollowPath(follower,paths.get(14), true),
-//                        new WaitCommand(1000),
-//                        new FollowPath(follower,paths.get(15), true),
-//                        new WaitCommand(1000)
-                )
-        );
-    }
-
-    @Override
-    public void run(){
-        super.run();
-//        robot.periodic();
-    }
-
-
-    public class waitForPathFinished extends CommandBase{
-        Follower follower;
-        public waitForPathFinished(Follower follower){
-            this.follower = follower;
+        waitForStart();
+        while (opModeIsActive()){
+        switch (Auto){
+            case ZERO:
+                if (!follower.isBusy()){
+                    follower.followPath(paths.get(0),true);
+                    Auto = auto.ONE;
+                }
+                break;
+            case ONE:
+                if (!follower.isBusy()){
+                    follower.followPath(paths.get(1),true);
+                    Auto = auto.TWO;
+                }
+                break;
+            case TWO:
+                if (!follower.isBusy()){
+                    follower.followPath(paths.get(2),true);
+                    Auto = auto.THREE;
+                }
+                break;
+            case THREE:
+                if (!follower.isBusy()){
+                    follower.followPath(paths.get(3),true);
+                    Auto = auto.FOUR;
+                }
+                break;
+            case FOUR:
+                if (!follower.isBusy()){
+                    follower.followPath(paths.get(4),true);
+                    Auto = auto.FIVE;
+                }
+                break;
+            case FIVE:
+                if (!follower.isBusy()){
+                    follower.followPath(paths.get(5),true);
+                    Auto = auto.SIX;
+                }
+                break;
+            case SIX:
+                if (!follower.isBusy()){
+                    follower.followPath(paths.get(6),true);
+                    Auto = auto.SEVEN;
+                }
+                break;
+            case SEVEN:
+                if (!follower.isBusy()){
+                    follower.followPath(paths.get(7),true);
+                    Auto = auto.EIGHT;
+                }
+                break;
+            case EIGHT:
+                if (!follower.isBusy()){
+                    follower.followPath(paths.get(8),true);
+                    Auto = auto.NINE;
+                }
+                break;
+            case NINE:
+                if (!follower.isBusy()){
+                    follower.followPath(paths.get(9),true);
+                    Auto = auto.TEN;
+                }
+                break;
+            case TEN:
+                if (!follower.isBusy()){
+                    follower.followPath(paths.get(10),true);
+                    Auto = auto.ELEVEN;
+                }
+                break;
+            case ELEVEN:
+                if (!follower.isBusy()){
+                    follower.followPath(paths.get(11),true);
+                    Auto = auto.TWELVE;
+                }
+                break;
+            case TWELVE:
+                if (!follower.isBusy()){
+                    follower.followPath(paths.get(12),true);
+                    Auto = auto.THIRTEEN;
+                }
+                break;
+            case THIRTEEN:
+                if (!follower.isBusy()){
+                    follower.followPath(paths.get(13),true);
+                    Auto = auto.END;
+                }
+                break;
         }
-        @Override
-        public boolean isFinished(){
-            return follower.isBusy();
+        follower.update();
         }
     }
 }
