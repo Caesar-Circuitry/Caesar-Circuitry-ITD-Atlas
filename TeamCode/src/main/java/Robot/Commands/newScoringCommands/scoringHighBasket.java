@@ -30,9 +30,8 @@ public class scoringHighBasket extends CommandBase {
     }
 
     @Override
-    public void execute(){
-        outtakeSubsystem.periodic();
-        intakeSubsystem.periodic();
+    public boolean isFinished(){
+        return true;
     }
 
 }

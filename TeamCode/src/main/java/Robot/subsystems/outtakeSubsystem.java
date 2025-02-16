@@ -37,7 +37,8 @@ public class outtakeSubsystem extends SubsystemBase {
     private cachingMotor vertSlide; // Port 0
     private Motor.Encoder vertEnc; // Port 0
     private cachingServo outClaw; // Port 2
-    private cachingServo outClawPivot; // Port 5
+    //private cachingServo outClawPivot; // Port 5
+    private Servo outClawPivot;
     private cachingServo out4BarPivot; // Ports 3(1)
     private PIDController viper;
     private double vertSlideTargetPos = 0;
@@ -49,11 +50,12 @@ public class outtakeSubsystem extends SubsystemBase {
         vertSlide = new cachingMotor(hmap.get(DcMotorEx.class, "vertSlide"));
         vertEnc = new Motor(hmap, "vertSlide", Motor.GoBILDA.RPM_435).encoder;
         //decides amount of current before it resets
-        vertSlide.getMotor().setCurrentAlert(7.00, CurrentUnit.AMPS);
+        vertSlide.getMotor().setCurrentAlert(9.2, CurrentUnit.AMPS);
 
         vertEnc.reset();
         outClaw = new cachingServo(hmap.get(Servo.class,"outClaw"));
-        outClawPivot = new cachingServo(hmap.get(Servo.class,"outClawPivot"));
+        //outClawPivot = new cachingServo(hmap.get(Servo.class,"outClawPivot"));
+        outClawPivot = hmap.get(Servo.class,"outClawPivot");
         out4BarPivot= new cachingServo(hmap.get(Servo.class,"out4BarPivot1"));
         viper = new PIDController(oKP,0,oKD);
         this.robot = robot;
@@ -66,7 +68,7 @@ public class outtakeSubsystem extends SubsystemBase {
             this.EncoderPos = 0;
         }
             vertSlide.setPower(
-                    (viper.calculate(EncoderPos/ ticksPerInch, vertSlideTargetPos) * robot.getVoltage())/12
+                    (viper.calculate(EncoderPos/ ticksPerInch, vertSlideTargetPos)*12)/robot.getVoltage()
             );
         if (vertSlide.getMotor().isOverCurrent()){
             vertEnc.reset();
@@ -85,14 +87,23 @@ public class outtakeSubsystem extends SubsystemBase {
         this.outClaw.setServoPos(outClawClose);
     }
 
-    public void setOutClawPivotTransfer(){
-        this.outClawPivot.setServoPos(outClawPivotTransfer);
+//    public void setOutClawPivotTransfer(){
+//        this.outClawPivot.setServoPos(outClawPivotTransfer);
+//    }
+//    public void setOutClawPivotChamber(){
+//        this.outClawPivot.setServoPos(outClawPivotChamber);
+//    }
+//    public void setOutClawPivotBasket(){
+//        this.outClawPivot.setServoPos(outClawPivotBasket);
+//    }
+public void setOutClawPivotTransfer(){
+        this.outClawPivot.setPosition(outClawPivotTransfer);
     }
     public void setOutClawPivotChamber(){
-        this.outClawPivot.setServoPos(outClawPivotChamber);
+        this.outClawPivot.setPosition(outClawPivotChamber);
     }
     public void setOutClawPivotBasket(){
-        this.outClawPivot.setServoPos(outClawPivotBasket);
+        this.outClawPivot.setPosition(outClawPivotBasket);
     }
 
     public void setOut4BarPivotTransfer(){
@@ -126,5 +137,13 @@ public class outtakeSubsystem extends SubsystemBase {
     }
     public void setVertSlideHighBasket(){
         this.vertSlideTargetPos = outViperHighBasket;
+    }
+
+    public double getEncoderPos(){
+        return this.EncoderPos;
+    }
+
+    public double getTicksPerInch() {
+        return ticksPerInch;
     }
 }

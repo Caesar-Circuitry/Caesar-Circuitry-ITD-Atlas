@@ -3,6 +3,7 @@ package opModes.auto;
 import com.arcrobotics.ftclib.command.CommandBase;
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
+import com.arcrobotics.ftclib.command.ParallelRaceGroup;
 import com.arcrobotics.ftclib.command.RunCommand;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.pedropathing.commands.FollowPath;
@@ -18,6 +19,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import java.util.ArrayList;
 
 import Robot.Commands.newScoringCommands.scoringHighChamber;
+import Robot.Commands.newScoringCommands.scoringHighChamberClip;
 import Robot.constants;
 import Robot.robotContainer;
 import pedroPathing.constants.FConstants;
@@ -25,8 +27,8 @@ import pedroPathing.constants.LConstants;
 
 @Autonomous
 public class fiveSpecimenAuto extends CommandOpMode {
-    robotContainer robot;
-    Follower follower;
+   private robotContainer robot;
+   private Follower follower;
     private final ArrayList<PathChain> paths = new ArrayList<>();
     public void generatePushPath(){
         follower.setStartingPose(new Pose(7, 66, Math.toRadians(180)));
@@ -209,22 +211,25 @@ public class fiveSpecimenAuto extends CommandOpMode {
     @Override
     public void initialize() {
         Constants.setConstants(FConstants.class, LConstants.class);
-        follower =new Follower(hardwareMap);
+        //follower =new Follower(hardwareMap);
         robot = new robotContainer(hardwareMap, constants.opModeType.AUTONOMOUS);
+        follower = robot.drivetrainSubsystem.follower;
         super.reset();
         register(robot.drivetrainSubsystem, robot.intakeSubsystem, robot.outtakeSubsystem);
         follower.setMaxPower(1);
 
         generatePushPath();
         schedule(
-                new RunCommand(() -> robot.outtakeSubsystem.periodic()),
+                new RunCommand(() -> robot.periodic()),
                 //TODO replace wait Command with waitForPathFinished once done tuning
                 new SequentialCommandGroup(
-                        new ParallelCommandGroup(
-                        new FollowPath(follower,paths.get(0), true),
-                        new scoringHighChamber(robot.outtakeSubsystem, robot.intakeSubsystem)
-                                ),
+                        new ParallelRaceGroup(
+                                new FollowPath(follower,paths.get(0), true),
+                                new scoringHighChamber(robot.outtakeSubsystem, robot.intakeSubsystem),
+                                new waitForPathFinished(follower)
+                        ),
                         new waitForPathFinished(follower),
+                        new scoringHighChamberClip(robot.outtakeSubsystem,robot.intakeSubsystem),
                         new FollowPath(follower,paths.get(1), true),
                         new waitForPathFinished(follower),
                         new FollowPath(follower,paths.get(2), true),
@@ -258,7 +263,7 @@ public class fiveSpecimenAuto extends CommandOpMode {
     @Override
     public void run(){
         super.run();
-//        robot.periodic();
+        //robot.periodic();
     }
 
 
@@ -269,7 +274,7 @@ public class fiveSpecimenAuto extends CommandOpMode {
         }
         @Override
         public boolean isFinished(){
-            return follower.isBusy();
+            return !follower.isBusy();
         }
     }
 }

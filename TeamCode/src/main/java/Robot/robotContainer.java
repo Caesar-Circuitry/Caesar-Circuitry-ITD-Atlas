@@ -41,8 +41,8 @@ public class robotContainer extends Robot {
 
     public void periodic(){
         drivetrainSubsystem.periodic();
-        intakeSubsystem.periodic();
-        outtakeSubsystem.periodic();
+//        intakeSubsystem.periodic();
+//        outtakeSubsystem.periodic();
         for (LynxModule hub : allHubs) {
             hub.clearBulkCache();
         }

@@ -5,12 +5,12 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import Robot.subsystems.intakeSubsystem;
 import Robot.subsystems.outtakeSubsystem;
 
-public class scoringObs extends CommandBase {
+public class scoringHighChamberClip extends CommandBase {
 
     private final outtakeSubsystem outtakeSubsystem;
     private final intakeSubsystem intakeSubsystem;
 
-    public scoringObs(outtakeSubsystem outtakeSubsystem, intakeSubsystem intakeSubsystem){
+    public scoringHighChamberClip(outtakeSubsystem outtakeSubsystem, intakeSubsystem intakeSubsystem){
         this.outtakeSubsystem = outtakeSubsystem;
         this.intakeSubsystem = intakeSubsystem;
     }
@@ -18,20 +18,19 @@ public class scoringObs extends CommandBase {
     @Override
     public void initialize(){
         outtakeSubsystem.openClaw();
-        outtakeSubsystem.setOut4BarPivotTransfer();
+        outtakeSubsystem.setOut4BarPivotHighChamber();
         outtakeSubsystem.setVertSlideTransfer();
-        outtakeSubsystem.setOutClawPivotTransfer();
+        outtakeSubsystem.setOutClawPivotChamber();
 
         intakeSubsystem.openClaw();
-        intakeSubsystem.setIntClawPivotObs();
-        intakeSubsystem.setIntPivotObs();
-        intakeSubsystem.setViperObs();
+        intakeSubsystem.setIntClawPivotTransfer();
+        intakeSubsystem.setIntPivotTransfer();
+        intakeSubsystem.setViperTransfer();
         intakeSubsystem.setIntClawRotateMiddle();
     }
-
     @Override
     public boolean isFinished(){
-        return true;
+        return outtakeSubsystem.getEncoderPos()<outtakeSubsystem.getTicksPerInch();// viper slide is less than 1 inch
     }
 
 }

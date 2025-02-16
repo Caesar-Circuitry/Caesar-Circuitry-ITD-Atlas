@@ -19,10 +19,9 @@ public class drivetrainSubsystem extends SubsystemBase {
     private Limelight3A limelight;
 
     public drivetrainSubsystem(HardwareMap hMap, Pose startingPose, boolean TeleOpEnabled){
-        follower = new Follower(hMap);
-        voltageIterator.setHmap(hMap);
-        //limelight = hMap.get(Limelight3A.class,"LL");
         Constants.setConstants(FConstants.class, LConstants.class);
+        follower = new Follower(hMap);
+        //limelight = hMap.get(Limelight3A.class,"LL");
         follower.setStartingPose(startingPose);
 
         if (TeleOpEnabled){
@@ -33,8 +32,6 @@ public class drivetrainSubsystem extends SubsystemBase {
     @Override
     public void periodic(){
         follower.update();
-        follower.updatePose();
-        voltageIterator.periodic();
     }
 
     public void setPathChain(PathChain pathChain){

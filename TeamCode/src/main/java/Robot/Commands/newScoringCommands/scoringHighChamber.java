@@ -28,11 +28,9 @@ public class scoringHighChamber extends CommandBase {
         intakeSubsystem.setViperTransfer();
         intakeSubsystem.setIntClawRotateMiddle();
     }
-
     @Override
-    public void execute(){
-        outtakeSubsystem.periodic();
-        intakeSubsystem.periodic();
+    public boolean isFinished(){
+        return true;
     }
 
 }

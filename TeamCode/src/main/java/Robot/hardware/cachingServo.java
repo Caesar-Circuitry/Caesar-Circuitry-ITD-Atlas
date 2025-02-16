@@ -12,7 +12,7 @@ public class cachingServo {
 
     public void setServoPos(double pos){
         this.servoPos = pos;
-        if(this.servoPos == this.prevServoPos) {
+        if(this.servoPos != this.prevServoPos) {
             servo.setPosition(servoPos);
         }
         this.prevServoPos = servoPos;
