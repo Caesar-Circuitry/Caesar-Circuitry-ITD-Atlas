@@ -17,16 +17,23 @@ public class scoringHighChamberClip extends CommandBase {
 
     @Override
     public void initialize(){
-        outtakeSubsystem.openClaw();
-        outtakeSubsystem.setOut4BarPivotHighChamber();
-        outtakeSubsystem.setVertSlideTransfer();
-        outtakeSubsystem.setOutClawPivotChamber();
-
         intakeSubsystem.openClaw();
         intakeSubsystem.setIntClawPivotTransfer();
         intakeSubsystem.setIntPivotTransfer();
         intakeSubsystem.setViperTransfer();
         intakeSubsystem.setIntClawRotateMiddle();
+        
+        outtakeSubsystem.setOut4BarPivotHighChamber();
+        outtakeSubsystem.setVertSlideTransfer();
+        outtakeSubsystem.setOutClawPivotChamber();
+        //outtakeSubsystem.openClaw();
+
+    }
+    @Override
+    public void execute(){
+        if (outtakeSubsystem.getEncoderPos()<(outtakeSubsystem.getTicksPerInch()*2)){
+            outtakeSubsystem.openClaw();
+        }
     }
     @Override
     public boolean isFinished(){

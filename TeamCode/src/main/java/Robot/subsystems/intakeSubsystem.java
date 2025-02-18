@@ -6,12 +6,14 @@ import static Robot.constants.iKP;
 import static Robot.constants.intClawClose;
 import static Robot.constants.intClawOpen;
 import static Robot.constants.intClawPivotObs;
+import static Robot.constants.intClawPivotStart;
 import static Robot.constants.intClawPivotSub;
 import static Robot.constants.intClawPivotTransfer;
 import static Robot.constants.intClawRotateLeft;
 import static Robot.constants.intClawRotateMiddle;
 import static Robot.constants.intClawRotateRight;
 import static Robot.constants.intPivotObs;
+import static Robot.constants.intPivotStart;
 import static Robot.constants.intPivotSub;
 import static Robot.constants.intPivotTransfer;
 import static Robot.constants.intViperObs;
@@ -31,7 +33,7 @@ import Robot.hardware.cachingServo;
 import Robot.robotContainer;
 
 public class intakeSubsystem extends SubsystemBase {
-    private cachingMotor horzSlide; // Port -
+    private DcMotorEx horzSlide; // Port -
     private Motor.Encoder horzEnc; // Port -
     private cachingServo intClaw; // Port -
     private cachingServo intClawPivot; // Port -
@@ -44,7 +46,7 @@ public class intakeSubsystem extends SubsystemBase {
     private final robotContainer robot;
 
     public intakeSubsystem(HardwareMap hmap, robotContainer robot){
-        horzSlide = new cachingMotor(hmap.get(DcMotorEx.class, "horzSlide"));
+        horzSlide = hmap.get(DcMotorEx.class,"horzSlide");
         horzEnc = new Motor(hmap, "horzSlide", Motor.GoBILDA.RPM_435).encoder;
         horzEnc.reset();
         intClaw = new cachingServo(hmap.get(Servo.class,"intClaw"));
@@ -87,6 +89,9 @@ public class intakeSubsystem extends SubsystemBase {
     public void setIntClawPivotTransfer(){
         this.intClawPivot.setServoPos(intClawPivotTransfer);
     }
+    public void setIntClawPivotStart(){
+        this.intClawPivot.setServoPos(intClawPivotStart);
+    }
 
     public void setIntClawRotateLeft(){
         this.intClawRotate.setServoPos(intClawRotateLeft);
@@ -101,6 +106,9 @@ public class intakeSubsystem extends SubsystemBase {
     public void setIntPivotSub(){this.intPivot.setServoPos(intPivotSub);}
     public void setIntPivotObs(){this.intPivot.setServoPos(intPivotObs);}
     public void setIntPivotTransfer(){this.intPivot.setServoPos(intPivotTransfer);}
+    public void setIntPivotStart(){
+        this.intPivot.setServoPos(intPivotStart);
+    }
 
     public void setViperZero(){
         this.horzSlideTargetPos = intViperZero;

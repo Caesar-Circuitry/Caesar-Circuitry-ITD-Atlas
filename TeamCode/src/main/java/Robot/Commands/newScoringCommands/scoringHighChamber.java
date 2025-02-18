@@ -18,15 +18,18 @@ public class scoringHighChamber extends CommandBase {
     @Override
     public void initialize(){
         outtakeSubsystem.closeClaw();
+        intakeSubsystem.openClaw();
+
+        intakeSubsystem.setIntClawPivotObs();
+        intakeSubsystem.setIntPivotTransfer();
+        intakeSubsystem.setViperTransfer();
+        intakeSubsystem.setIntClawRotateMiddle();
+
         outtakeSubsystem.setOut4BarPivotHighChamber();
         outtakeSubsystem.setVertSlideHighChamber();
         outtakeSubsystem.setOutClawPivotChamber();
 
-        intakeSubsystem.openClaw();
-        intakeSubsystem.setIntClawPivotTransfer();
-        intakeSubsystem.setIntPivotTransfer();
-        intakeSubsystem.setViperTransfer();
-        intakeSubsystem.setIntClawRotateMiddle();
+        //intakeSubsystem.openClaw();
     }
     @Override
     public boolean isFinished(){

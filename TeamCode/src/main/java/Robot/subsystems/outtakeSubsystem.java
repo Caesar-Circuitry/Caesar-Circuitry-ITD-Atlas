@@ -6,6 +6,7 @@ import static Robot.constants.out4BarPivot1HighBasket;
 import static Robot.constants.out4BarPivot1HighChamber;
 import static Robot.constants.out4BarPivot1LowBasket;
 import static Robot.constants.out4BarPivot1LowChamber;
+import static Robot.constants.out4BarPivot1Start;
 import static Robot.constants.out4BarPivot1Transfer;
 import static Robot.constants.outClawClose;
 import static Robot.constants.outClawOpen;
@@ -120,6 +121,9 @@ public void setOutClawPivotTransfer(){
     }
     public void setOut4BarPivotHighBasket(){
         this.out4BarPivot.setServoPos(out4BarPivot1HighBasket);
+    }
+    public void setOut4BarPivotSart(){
+        this.out4BarPivot.setServoPos(out4BarPivot1Start);
     }
     public void setVertSlideZero(){
         this.vertSlideTargetPos = outViperZero;

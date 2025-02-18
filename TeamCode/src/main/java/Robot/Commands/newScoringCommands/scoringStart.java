@@ -5,32 +5,28 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import Robot.subsystems.intakeSubsystem;
 import Robot.subsystems.outtakeSubsystem;
 
-public class scoringObs extends CommandBase {
+public class scoringStart extends CommandBase {
 
     private final outtakeSubsystem outtakeSubsystem;
     private final intakeSubsystem intakeSubsystem;
 
-    public scoringObs(outtakeSubsystem outtakeSubsystem, intakeSubsystem intakeSubsystem){
+    public scoringStart(outtakeSubsystem outtakeSubsystem, intakeSubsystem intakeSubsystem){
         this.outtakeSubsystem = outtakeSubsystem;
         this.intakeSubsystem = intakeSubsystem;
     }
 
     @Override
     public void initialize(){
-        outtakeSubsystem.openClaw();
-        outtakeSubsystem.setOut4BarPivotTransfer();
+        outtakeSubsystem.closeClaw();
+        outtakeSubsystem.setOut4BarPivotSart();
         outtakeSubsystem.setVertSlideTransfer();
-        outtakeSubsystem.setOutClawPivotTransfer();
+        outtakeSubsystem.setOutClawPivotChamber();
 
-        //intakeSubsystem.setViperObs();
         intakeSubsystem.openClaw();
-        intakeSubsystem.setIntClawPivotObs();
-        intakeSubsystem.openClaw();
-        intakeSubsystem.setIntPivotObs();
-        intakeSubsystem.openClaw();
-        intakeSubsystem.openClaw();
+        intakeSubsystem.setIntClawPivotStart();
+        intakeSubsystem.setIntPivotStart();
+        intakeSubsystem.setViperTransfer();
         intakeSubsystem.setIntClawRotateMiddle();
-        intakeSubsystem.openClaw();
     }
 
     @Override

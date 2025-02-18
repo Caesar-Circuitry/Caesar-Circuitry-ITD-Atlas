@@ -40,9 +40,9 @@ public class robotContainer extends Robot {
 
 
     public void periodic(){
-        drivetrainSubsystem.periodic();
-//        intakeSubsystem.periodic();
-//        outtakeSubsystem.periodic();
+        //drivetrainSubsystem.periodic();
+        intakeSubsystem.periodic();
+        outtakeSubsystem.periodic();
         for (LynxModule hub : allHubs) {
             hub.clearBulkCache();
         }
@@ -51,5 +51,7 @@ public class robotContainer extends Robot {
     public double getVoltage(){
         return drivetrainSubsystem.follower.getVoltage();
     }
-
+    public void setOffset(Pose pose){
+        robotPose = pose;
+    }
 }
