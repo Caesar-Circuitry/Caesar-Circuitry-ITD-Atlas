@@ -17,6 +17,7 @@ import static Robot.constants.intPivotStart;
 import static Robot.constants.intPivotSub;
 import static Robot.constants.intPivotTransfer;
 import static Robot.constants.intViperObs;
+import static Robot.constants.intViperObsShort;
 import static Robot.constants.intViperSub;
 import static Robot.constants.intViperTransfer;
 import static Robot.constants.intViperZero;
@@ -24,6 +25,7 @@ import static Robot.constants.intViperZero;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -49,6 +51,7 @@ public class intakeSubsystem extends SubsystemBase {
         horzSlide = hmap.get(DcMotorEx.class,"horzSlide");
         horzEnc = new Motor(hmap, "horzSlide", Motor.GoBILDA.RPM_435).encoder;
         horzEnc.reset();
+        horzSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intClaw = new cachingServo(hmap.get(Servo.class,"intClaw"));
         intClawPivot = new cachingServo(hmap.get(Servo.class,"intClawPivot"));
         intClawRotate = new cachingServo(hmap.get(Servo.class,"intClawRotate"));
@@ -121,6 +124,9 @@ public class intakeSubsystem extends SubsystemBase {
     }
     public void setViperObs(){
         this.horzSlideTargetPos = intViperObs;
+    }
+    public void setViperObsShort(){
+        this.horzSlideTargetPos = intViperObsShort;
     }
 
 

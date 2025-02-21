@@ -19,6 +19,7 @@ public class scoringHighChamber extends CommandBase {
     public void initialize(){
         outtakeSubsystem.closeClaw();
         intakeSubsystem.openClaw();
+        outtakeSubsystem.closeClaw();
 
         intakeSubsystem.setIntClawPivotObs();
         intakeSubsystem.setIntPivotTransfer();

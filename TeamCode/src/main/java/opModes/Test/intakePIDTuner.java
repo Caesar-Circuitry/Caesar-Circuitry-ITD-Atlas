@@ -43,6 +43,7 @@ public class intakePIDTuner extends LinearOpMode {
         motor = hardwareMap.get(DcMotor.class,motorName);
         motorEnc = new Motor(hardwareMap,motorName, Motor.GoBILDA.RPM_435).encoder;
         viper = new PIDFController(iKP,0,iKD, iKF);
+        motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         voltageSensor = hardwareMap.voltageSensor.iterator().next();
         multipleTelemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         motorEnc.reset();

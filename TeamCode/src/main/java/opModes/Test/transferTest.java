@@ -95,7 +95,7 @@ public class transferTest extends LinearOpMode {
         horzEnc = new Motor(hardwareMap, "horzSlide", Motor.GoBILDA.RPM_435).encoder;
         horzEnc.reset();
         multipleTelemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        out4BarPivot = hardwareMap.get(Servo.class, "out4BarPivot1");
+        out4BarPivot = hardwareMap.get(Servo.class, "out4BarPivot2");
         outClawPivot = hardwareMap.get(Servo.class, "outClawPivot");
         outClaw = hardwareMap.get(Servo.class, "outClaw");
         intClaw = hardwareMap.get(Servo.class, "intClaw");

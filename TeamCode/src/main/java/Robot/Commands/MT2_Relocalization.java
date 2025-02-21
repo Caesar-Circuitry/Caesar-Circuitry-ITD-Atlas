@@ -33,7 +33,6 @@ public class MT2_Relocalization extends CommandBase {
             // Should be unnecessary
             timer.reset();
         }
-
         subsystem.getLimelight().updateRobotOrientation(
                 // Limelight needs heading in degrees
                 Math.toDegrees(
@@ -84,7 +83,7 @@ public class MT2_Relocalization extends CommandBase {
             x *= 39.3701;
             y *= 39.3701;
 
-            x /= reads.size();
+            x /= reads.size(); // TODO x needs to be fixed
             y /= reads.size();
 
             // Switch to pedro 0" to 144" coordinate system instead of -72" to 72" coordinate system

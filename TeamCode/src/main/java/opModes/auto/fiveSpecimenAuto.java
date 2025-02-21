@@ -24,6 +24,8 @@ import Robot.Commands.IntakeCommands.intClawClosed;
 import Robot.Commands.IntakeCommands.intClawOpen;
 import Robot.Commands.IntakeCommands.intObs;
 import Robot.Commands.IntakeCommands.intSetViperObs;
+import Robot.Commands.IntakeCommands.intSetViperObsFirst;
+import Robot.Commands.IntakeCommands.intSetViperTransfer;
 import Robot.Commands.newScoringCommands.scoringHighChamber;
 import Robot.Commands.newScoringCommands.scoringHighChamberClip;
 import Robot.Commands.newScoringCommands.scoringObs;
@@ -220,7 +222,7 @@ public class fiveSpecimenAuto extends CommandOpMode {
                         new FollowPath(follower,paths.get(4), true),
                         new waitForPathFinished(follower),
                         new intClawOpen(robot.intakeSubsystem),
-                        new intSetViperObs(robot.intakeSubsystem),
+                        new intSetViperObsFirst(robot.intakeSubsystem),
                         new WaitCommand(750),
                         new scoringObs(robot.outtakeSubsystem,robot.intakeSubsystem),
                         new intClawOpen(robot.intakeSubsystem),
@@ -228,9 +230,11 @@ public class fiveSpecimenAuto extends CommandOpMode {
                         new intClawClosed(robot.intakeSubsystem),
                         new WaitCommand(750),
                         new scoringTransfer(robot.outtakeSubsystem,robot.intakeSubsystem),
-                        new WaitCommand(750),
+                        new WaitCommand(200),
+                        new intSetViperTransfer(robot.intakeSubsystem),
+                        new WaitCommand(700),
                         new outClawClose(robot.outtakeSubsystem),
-                        new WaitCommand(250),
+                        new WaitCommand(100),
                         // transfer !!!
                         new ParallelRaceGroup(
                         new FollowPath(follower,paths.get(5), true),
@@ -249,9 +253,11 @@ public class fiveSpecimenAuto extends CommandOpMode {
                         new intClawClosed(robot.intakeSubsystem),
                         new WaitCommand(500),
                         new scoringTransfer(robot.outtakeSubsystem,robot.intakeSubsystem),
-                        new WaitCommand(750),
+                        new WaitCommand(200),
+                        new intSetViperTransfer(robot.intakeSubsystem),
+                        new WaitCommand(700),
                         new outClawClose(robot.outtakeSubsystem),
-                        new WaitCommand(250),
+                        new WaitCommand(100),
                         new ParallelCommandGroup(
                                 new FollowPath(follower,paths.get(7), true),
                                 new scoringHighChamber(robot.outtakeSubsystem, robot.intakeSubsystem)
@@ -269,9 +275,11 @@ public class fiveSpecimenAuto extends CommandOpMode {
                         new intClawClosed(robot.intakeSubsystem),
                         new WaitCommand(500),
                         new scoringTransfer(robot.outtakeSubsystem,robot.intakeSubsystem),
-                        new WaitCommand(750),
+                        new WaitCommand(200),
+                        new intSetViperTransfer(robot.intakeSubsystem),
+                        new WaitCommand(700),
                         new outClawClose(robot.outtakeSubsystem),
-                        new WaitCommand(250),
+                        new WaitCommand(100),
                         new ParallelCommandGroup(
                                 new FollowPath(follower,paths.get(9), true),
                                 new scoringHighChamber(robot.outtakeSubsystem, robot.intakeSubsystem)
@@ -294,7 +302,9 @@ public class fiveSpecimenAuto extends CommandOpMode {
         robot.periodic();
         telemetry.addData("Pose",follower.getPose());
         telemetry.update();
+        constants.teleStartPose = follower.getPose();
     }
+
 
     public class waitForPathFinished extends CommandBase{
         Follower follower;

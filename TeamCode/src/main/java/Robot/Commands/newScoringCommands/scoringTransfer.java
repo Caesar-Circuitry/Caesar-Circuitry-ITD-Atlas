@@ -25,9 +25,9 @@ public class scoringTransfer extends CommandBase {
         intakeSubsystem.closeClaw();
         intakeSubsystem.setIntClawPivotTransfer();
         intakeSubsystem.setIntPivotTransfer();
-        intakeSubsystem.setViperTransfer();
         intakeSubsystem.setIntClawRotateMiddle();
     }
+
 
     @Override
     public boolean isFinished(){
