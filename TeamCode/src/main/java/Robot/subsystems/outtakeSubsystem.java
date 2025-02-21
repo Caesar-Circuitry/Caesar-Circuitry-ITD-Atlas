@@ -51,13 +51,13 @@ public class outtakeSubsystem extends SubsystemBase {
         vertSlide = new cachingMotor(hmap.get(DcMotorEx.class, "vertSlide"));
         vertEnc = new Motor(hmap, "vertSlide", Motor.GoBILDA.RPM_435).encoder;
         //decides amount of current before it resets
-        vertSlide.getMotor().setCurrentAlert(9.2, CurrentUnit.AMPS);
+        vertSlide.getMotor().setCurrentAlert(8.0, CurrentUnit.AMPS);
 
         vertEnc.reset();
         outClaw = new cachingServo(hmap.get(Servo.class,"outClaw"));
         //outClawPivot = new cachingServo(hmap.get(Servo.class,"outClawPivot"));
         outClawPivot = hmap.get(Servo.class,"outClawPivot");
-        out4BarPivot= new cachingServo(hmap.get(Servo.class,"out4BarPivot1"));
+        out4BarPivot= new cachingServo(hmap.get(Servo.class,"out4BarPivot2"));
         viper = new PIDController(oKP,0,oKD);
         this.robot = robot;
     }

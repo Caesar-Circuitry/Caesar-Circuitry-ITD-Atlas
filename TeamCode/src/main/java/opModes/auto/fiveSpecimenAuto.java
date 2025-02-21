@@ -29,9 +29,11 @@ import Robot.Commands.IntakeCommands.intSetViperTransfer;
 import Robot.Commands.newScoringCommands.scoringHighChamber;
 import Robot.Commands.newScoringCommands.scoringHighChamberClip;
 import Robot.Commands.newScoringCommands.scoringObs;
+import Robot.Commands.newScoringCommands.scoringObsUp;
 import Robot.Commands.newScoringCommands.scoringStart;
 import Robot.Commands.newScoringCommands.scoringTransfer;
 import Robot.Commands.outtakeCommands.outClawClose;
+import Robot.Commands.outtakeCommands.outClawOpen;
 import Robot.constants;
 import Robot.robotContainer;
 import pedroPathing.constants.FConstants;
@@ -76,8 +78,8 @@ public class fiveSpecimenAuto extends CommandOpMode {
                                 //line 3
                                 new BezierCurve(
                                         new Point(62.000, 37, Point.CARTESIAN),
-                                        new Point(69, 21.469, Point.CARTESIAN),
-                                        new Point(18.000, 24.000, Point.CARTESIAN)
+                                        new Point(75, 17, Point.CARTESIAN),
+                                        new Point(17, 24.000, Point.CARTESIAN)
                                 )
                         )
                         .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(0))
@@ -88,9 +90,9 @@ public class fiveSpecimenAuto extends CommandOpMode {
                         .addPath(
                                 //line 4
                                 new BezierCurve(
-                                        new Point(18.000, 24, Point.CARTESIAN),
+                                        new Point(17, 24, Point.CARTESIAN),
                                         new Point(75.000, 22.5, Point.CARTESIAN),
-                                        new Point(72.000, 11, Point.CARTESIAN),
+                                        new Point(72.000, 8, Point.CARTESIAN),
                                         new Point(19.000, 11, Point.CARTESIAN)
                                 )
                         )
@@ -104,7 +106,7 @@ public class fiveSpecimenAuto extends CommandOpMode {
                                 new BezierLine(
                                         new Point(19.000, 11, Point.CARTESIAN),
                                         //new Point(26.000, 48.000, Point.CARTESIAN)
-                                        new Point(25,47,Point.CARTESIAN)
+                                        new Point(24,48,Point.CARTESIAN)
                                 )
                         )
                         .setLinearHeadingInterpolation(Math.toRadians(0), Math.toRadians(220))
@@ -115,8 +117,8 @@ public class fiveSpecimenAuto extends CommandOpMode {
                         .addPath(
                                 //line 7
                                 new BezierLine(
-                                        new Point(25.000, 47.000, Point.CARTESIAN),
-                                        new Point(43, 62.000, Point.CARTESIAN)
+                                        new Point(24.000, 48.000, Point.CARTESIAN),
+                                        new Point(40, 62.000, Point.CARTESIAN)
                                 )
                         )
                         .setLinearHeadingInterpolation(Math.toRadians(220), Math.toRadians(180))
@@ -127,8 +129,8 @@ public class fiveSpecimenAuto extends CommandOpMode {
                         .addPath(
                                 //line 8
                                 new BezierLine(
-                                        new Point(43, 62.000, Point.CARTESIAN),
-                                        new Point(26.000, 48.000, Point.CARTESIAN)
+                                        new Point(40, 62.000, Point.CARTESIAN),
+                                        new Point(24.000, 48.000, Point.CARTESIAN)
                                 )
                         )
                         .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(220))
@@ -139,8 +141,8 @@ public class fiveSpecimenAuto extends CommandOpMode {
                         .addPath(
                                 //line 9
                                 new BezierLine(
-                                        new Point(26.000, 48.000, Point.CARTESIAN),
-                                        new Point(43, 64.500, Point.CARTESIAN)
+                                        new Point(24.000, 48.000, Point.CARTESIAN),
+                                        new Point(40, 64.500, Point.CARTESIAN)
                                 )
                         )
                         .setLinearHeadingInterpolation(Math.toRadians(220), Math.toRadians(180))
@@ -151,8 +153,8 @@ public class fiveSpecimenAuto extends CommandOpMode {
                         .addPath(
                                 //line 10
                                 new BezierLine(
-                                        new Point(43, 64.500, Point.CARTESIAN),
-                                        new Point(26.000, 48.000, Point.CARTESIAN)
+                                        new Point(40, 64.500, Point.CARTESIAN),
+                                        new Point(24.000, 48.000, Point.CARTESIAN)
                                 )
                         )
                         .setLinearHeadingInterpolation(Math.toRadians(180), Math.toRadians(220))
@@ -163,8 +165,8 @@ public class fiveSpecimenAuto extends CommandOpMode {
                         .addPath(
                                 //line 11
                                 new BezierLine(
-                                        new Point(26.000, 48.000, Point.CARTESIAN),
-                                        new Point(43, 67.000, Point.CARTESIAN)
+                                        new Point(24.000, 48.000, Point.CARTESIAN),
+                                        new Point(40, 67.000, Point.CARTESIAN)
                                 )
                         )
                         .setLinearHeadingInterpolation(Math.toRadians(220), Math.toRadians(180))
@@ -175,7 +177,7 @@ public class fiveSpecimenAuto extends CommandOpMode {
                         .addPath(
                                 //line 14
                                 new BezierLine(
-                                        new Point(43, 69.500, Point.CARTESIAN),
+                                        new Point(40, 69.500, Point.CARTESIAN),
                                         new Point(15.000, 24.000, Point.CARTESIAN)
                                 )
                         )
@@ -223,16 +225,20 @@ public class fiveSpecimenAuto extends CommandOpMode {
                         new waitForPathFinished(follower),
                         new intClawOpen(robot.intakeSubsystem),
                         new intSetViperObsFirst(robot.intakeSubsystem),
-                        new WaitCommand(750),
+                        new WaitCommand(150),
+                        new scoringObsUp(robot.outtakeSubsystem, robot.intakeSubsystem),
+                        new WaitCommand(350),
                         new scoringObs(robot.outtakeSubsystem,robot.intakeSubsystem),
                         new intClawOpen(robot.intakeSubsystem),
-                        new WaitCommand(750),
+                        new outClawOpen(robot.outtakeSubsystem),
+                        new WaitCommand(500),
                         new intClawClosed(robot.intakeSubsystem),
-                        new WaitCommand(750),
+                        new outClawOpen(robot.outtakeSubsystem),
+                        new WaitCommand(500),
                         new scoringTransfer(robot.outtakeSubsystem,robot.intakeSubsystem),
-                        new WaitCommand(200),
+                        new WaitCommand(400),
                         new intSetViperTransfer(robot.intakeSubsystem),
-                        new WaitCommand(700),
+                        new WaitCommand(600),
                         new outClawClose(robot.outtakeSubsystem),
                         new WaitCommand(100),
                         // transfer !!!
@@ -246,16 +252,20 @@ public class fiveSpecimenAuto extends CommandOpMode {
                                 new FollowPath(follower,paths.get(6), true)
                         ),
                         new intSetViperObs(robot.intakeSubsystem),
-                        new WaitCommand(500),
+                        new WaitCommand(150),
+                        new scoringObsUp(robot.outtakeSubsystem, robot.intakeSubsystem),
+                        new WaitCommand(350),
                         new scoringObs(robot.outtakeSubsystem,robot.intakeSubsystem),
                         new intClawOpen(robot.intakeSubsystem),
+                        new outClawOpen(robot.outtakeSubsystem),
                         new WaitCommand(500),
                         new intClawClosed(robot.intakeSubsystem),
+                        new outClawOpen(robot.outtakeSubsystem),
                         new WaitCommand(500),
                         new scoringTransfer(robot.outtakeSubsystem,robot.intakeSubsystem),
-                        new WaitCommand(200),
+                        new WaitCommand(400),
                         new intSetViperTransfer(robot.intakeSubsystem),
-                        new WaitCommand(700),
+                        new WaitCommand(600),
                         new outClawClose(robot.outtakeSubsystem),
                         new WaitCommand(100),
                         new ParallelCommandGroup(
@@ -268,16 +278,20 @@ public class fiveSpecimenAuto extends CommandOpMode {
                                 new FollowPath(follower,paths.get(8), true)
                         ),
                         new intSetViperObs(robot.intakeSubsystem),
-                        new WaitCommand(500),
+                        new WaitCommand(150),
+                        new scoringObsUp(robot.outtakeSubsystem, robot.intakeSubsystem),
+                        new WaitCommand(350),
                         new scoringObs(robot.outtakeSubsystem,robot.intakeSubsystem),
                         new intClawOpen(robot.intakeSubsystem),
+                        new outClawOpen(robot.outtakeSubsystem),
                         new WaitCommand(500),
                         new intClawClosed(robot.intakeSubsystem),
+                        new outClawOpen(robot.outtakeSubsystem),
                         new WaitCommand(500),
                         new scoringTransfer(robot.outtakeSubsystem,robot.intakeSubsystem),
-                        new WaitCommand(200),
+                        new WaitCommand(400),
                         new intSetViperTransfer(robot.intakeSubsystem),
-                        new WaitCommand(700),
+                        new WaitCommand(600),
                         new outClawClose(robot.outtakeSubsystem),
                         new WaitCommand(100),
                         new ParallelCommandGroup(
@@ -286,11 +300,7 @@ public class fiveSpecimenAuto extends CommandOpMode {
                         ),
                         new waitForPathFinished(follower),
                         new scoringHighChamberClip(robot.outtakeSubsystem,robot.intakeSubsystem),
-                        new ParallelRaceGroup(
-                                new FollowPath(follower,paths.get(10), true),
-                                new scoringTransfer(robot.outtakeSubsystem,robot.intakeSubsystem)
-
-                        ),
+                        new FollowPath(follower,paths.get(10), true),
                         new waitForPathFinished(follower)
                 )
         );

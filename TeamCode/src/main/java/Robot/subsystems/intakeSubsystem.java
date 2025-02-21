@@ -108,6 +108,7 @@ public class intakeSubsystem extends SubsystemBase {
 
     public void setIntPivotSub(){this.intPivot.setServoPos(intPivotSub);}
     public void setIntPivotObs(){this.intPivot.setServoPos(intPivotObs);}
+    public void setIntPivotObsUp(){this.intPivot.setServoPos(intPivotObs+.2);}
     public void setIntPivotTransfer(){this.intPivot.setServoPos(intPivotTransfer);}
     public void setIntPivotStart(){
         this.intPivot.setServoPos(intPivotStart);
