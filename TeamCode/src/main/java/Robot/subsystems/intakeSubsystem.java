@@ -4,6 +4,7 @@ package Robot.subsystems;
 import static Robot.constants.iKD;
 import static Robot.constants.iKP;
 import static Robot.constants.intClawClose;
+import static Robot.constants.intClawCloseTele;
 import static Robot.constants.intClawOpen;
 import static Robot.constants.intClawPivotObs;
 import static Robot.constants.intClawPivotStart;
@@ -13,6 +14,7 @@ import static Robot.constants.intClawRotateLeft;
 import static Robot.constants.intClawRotateMiddle;
 import static Robot.constants.intClawRotateRight;
 import static Robot.constants.intPivotObs;
+import static Robot.constants.intPivotObsAuto;
 import static Robot.constants.intPivotStart;
 import static Robot.constants.intPivotSub;
 import static Robot.constants.intPivotTransfer;
@@ -79,6 +81,7 @@ public class intakeSubsystem extends SubsystemBase {
     public void openClaw(){
         this.intClaw.setServoPos(intClawOpen);
     }
+    public void closeClawTele(){this.intClaw.setServoPos(intClawCloseTele);}
     public void closeClaw(){
         this.intClaw.setServoPos(intClawClose);
     }
@@ -108,7 +111,8 @@ public class intakeSubsystem extends SubsystemBase {
 
     public void setIntPivotSub(){this.intPivot.setServoPos(intPivotSub);}
     public void setIntPivotObs(){this.intPivot.setServoPos(intPivotObs);}
-    public void setIntPivotObsUp(){this.intPivot.setServoPos(intPivotObs+.2);}
+    public void setIntPivotObsAuto(){this.intPivot.setServoPos(intPivotObsAuto);}
+    public void setIntPivotObsUp(){this.intPivot.setServoPos(intPivotSub+.025);}
     public void setIntPivotTransfer(){this.intPivot.setServoPos(intPivotTransfer);}
     public void setIntPivotStart(){
         this.intPivot.setServoPos(intPivotStart);

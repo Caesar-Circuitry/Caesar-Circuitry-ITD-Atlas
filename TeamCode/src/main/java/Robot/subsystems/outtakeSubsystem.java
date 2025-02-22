@@ -13,6 +13,8 @@ import static Robot.constants.outClawOpen;
 import static Robot.constants.outClawPivotBasket;
 import static Robot.constants.outClawPivotChamber;
 import static Robot.constants.outClawPivotTransfer;
+import static Robot.constants.outViperHang;
+import static Robot.constants.outViperHangDown;
 import static Robot.constants.outViperHighBasket;
 import static Robot.constants.outViperHighChamber;
 import static Robot.constants.outViperLowBasket;
@@ -142,6 +144,12 @@ public void setOutClawPivotTransfer(){
     public void setVertSlideHighBasket(){
         this.vertSlideTargetPos = outViperHighBasket;
     }
+    public void setVertSlideHang(){
+        this.vertSlideTargetPos = outViperHang;
+    }
+    public void setVertSlideHangDown(){
+        this.vertSlideTargetPos = outViperHangDown;
+    }
 
     public double getEncoderPos(){
         return this.EncoderPos;
@@ -149,5 +157,8 @@ public void setOutClawPivotTransfer(){
 
     public double getTicksPerInch() {
         return ticksPerInch;
+    }
+    public void resetEncoders(){
+        this.vertEnc.reset();
     }
 }

@@ -1,6 +1,7 @@
 package opModes.teleOp;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.ConditionalCommand;
 import com.arcrobotics.ftclib.command.InstantCommand;
 import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.arcrobotics.ftclib.command.SequentialCommandGroup;
@@ -15,7 +16,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
+import Robot.Commands.IntakeCommands.intClawClosedTele;
 import Robot.Commands.IntakeCommands.intClawOpen;
+import Robot.Commands.IntakeCommands.intClawRotateMiddle;
+import Robot.Commands.IntakeCommands.intClawRotateRight;
+import Robot.Commands.IntakeCommands.intPivotSub;
 import Robot.Commands.IntakeCommands.intSetViperObs;
 import Robot.Commands.IntakeCommands.intSetViperObsFirst;
 import Robot.Commands.IntakeCommands.intSetViperSub;
@@ -25,8 +30,11 @@ import Robot.Commands.newScoringCommands.scoringHighBasket;
 import Robot.Commands.newScoringCommands.scoringHighChamber;
 import Robot.Commands.newScoringCommands.scoringHighChamberClip;
 import Robot.Commands.newScoringCommands.scoringObs;
+import Robot.Commands.newScoringCommands.scoringObsUp;
 import Robot.Commands.newScoringCommands.scoringSub;
+import Robot.Commands.newScoringCommands.scoringSubUp;
 import Robot.Commands.newScoringCommands.scoringTransfer;
+import Robot.Commands.newScoringCommands.scoringTransferSample;
 import Robot.Commands.outtakeCommands.out4BarPivotHighChamber;
 import Robot.constants;
 import Robot.robotContainer;
@@ -35,15 +43,18 @@ import Robot.robotContainer;
 public class teleOp extends CommandOpMode {
 private robotContainer robot;
 private GamepadEx driver, operator;
-private ElapsedTime transferTimer;
+private ElapsedTime transferTimer, intakeTransferTimer;
 private boolean fieldCentric = false;
 private boolean followingPath = false;
 private boolean transfer = false;
+private double multiplier = 1;
     @Override
     public void initialize(){
         super.reset();
         transferTimer = new ElapsedTime();
+        intakeTransferTimer = new ElapsedTime();
         transferTimer.reset();
+        intakeTransferTimer.reset();
         robot = new robotContainer(hardwareMap, constants.opModeType.TELEOP);
         robot.setOffset(constants.teleStartPose);
         driver = new GamepadEx(gamepad1);
@@ -63,12 +74,19 @@ private boolean transfer = false;
                 robot.drivetrainSubsystem.follower.startTeleopDrive();
             }
         }else{
-            robot.drivetrainSubsystem.follower.setTeleOpMovementVectors(-gamepad1.left_stick_y,-gamepad1.left_stick_x/2,-gamepad1.right_stick_x,!fieldCentric);
+            robot.drivetrainSubsystem.follower.setTeleOpMovementVectors(-gamepad1.left_stick_y*multiplier,(-gamepad1.left_stick_x)*multiplier,(-gamepad1.right_stick_x*3/4)*multiplier,!fieldCentric);
         }
         if (transfer){
-            if (transferTimer.milliseconds()>1000){
+            if (intakeTransferTimer.milliseconds()>800){
                 schedule(
-                    new InstantCommand(robot.outtakeSubsystem::closeClaw)
+                        new intSetViperTransfer(robot.intakeSubsystem)
+                );
+
+            }
+            if (transferTimer.milliseconds()>1750){
+                schedule(
+                    new InstantCommand(robot.outtakeSubsystem::closeClaw),
+                    new InstantCommand(robot.intakeSubsystem::openClaw)
                 );
                 transfer = false;
             }
@@ -95,6 +113,12 @@ private boolean transfer = false;
                             new InstantCommand(this::enableFollowingPath)
                     )
             );
+            driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenPressed(
+                    new InstantCommand(this::slowDown)
+                );
+            driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenReleased(
+                new InstantCommand(this::speedUp)
+            );
     }
 
     private void operatorMapping(){
@@ -109,7 +133,7 @@ private boolean transfer = false;
         operator.getGamepadButton(GamepadKeys.Button.B).whenPressed(
                 new SequentialCommandGroup(
                     new scoringTransfer(robot.outtakeSubsystem,robot.intakeSubsystem),
-                    new intSetViperTransfer(robot.intakeSubsystem),
+                    new intClawClosedTele(robot.intakeSubsystem),
                     new InstantCommand(this::enableTransfer)
                 ));
         operator.getGamepadButton(GamepadKeys.Button.X).whenPressed(
@@ -127,24 +151,61 @@ private boolean transfer = false;
                 )
         );
         operator.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER).whenPressed(
-                new SequentialCommandGroup(
+                new ConditionalCommand( new SequentialCommandGroup(
+                        new intPivotSub(robot.intakeSubsystem),
                         new InstantCommand(robot.outtakeSubsystem::closeClaw),
-                        new InstantCommand(robot.intakeSubsystem::closeClaw)
-                )
-        );
+                        new InstantCommand(robot.intakeSubsystem::closeClaw),
+                        new InstantCommand(this::disableSubDrop)
+                ),
+                        new SequentialCommandGroup(
+                                new InstantCommand(robot.outtakeSubsystem::closeClaw),
+                                new InstantCommand(robot.intakeSubsystem::closeClaw)
+                        ), () -> constants.subDrop
+
+                ));
+
         operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
-                new SequentialCommandGroup(
-                    new intClawOpen(robot.intakeSubsystem),
-                    new scoringSub(robot.outtakeSubsystem,robot.intakeSubsystem),
-                    new intSetViperSub(robot.intakeSubsystem)
-                )
-        );
-        operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
                 new SequentialCommandGroup(
                     new intClawOpen(robot.intakeSubsystem),
                     new scoringObs(robot.outtakeSubsystem,robot.intakeSubsystem),
                     new intSetViperObs(robot.intakeSubsystem)
                 )
+        );
+        operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
+                new SequentialCommandGroup(
+                        new intClawOpen(robot.intakeSubsystem),
+                        new scoringSubUp(robot.outtakeSubsystem,robot.intakeSubsystem),
+                        new intSetViperSub(robot.intakeSubsystem),
+                        new InstantCommand(this::enableSubDrop)
+                )
+        );
+        operator.getGamepadButton(GamepadKeys.Button.DPAD_LEFT).whenPressed(
+                new SequentialCommandGroup(
+                        new intClawRotateMiddle(robot.intakeSubsystem)
+                )
+        );
+        operator.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT).whenPressed(
+                new SequentialCommandGroup(
+                        new intClawRotateRight(robot.intakeSubsystem)
+                )
+        );
+        operator.getGamepadButton(GamepadKeys.Button.LEFT_STICK_BUTTON).whenPressed(
+                new SequentialCommandGroup(
+                        new InstantCommand(this::intakeKnockDown),
+                        new intPivotSub(robot.intakeSubsystem)
+                )
+        );
+        operator.getGamepadButton(GamepadKeys.Button.RIGHT_STICK_BUTTON).whenPressed(
+                new SequentialCommandGroup(
+                        new InstantCommand(this::intakeKnockUp),
+                        new intPivotSub(robot.intakeSubsystem)
+                )
+        );
+        operator.getGamepadButton(GamepadKeys.Button.Y).whenPressed(
+                new scoringTransferSample(robot.outtakeSubsystem,robot.intakeSubsystem)
+        );
+        operator.getGamepadButton(GamepadKeys.Button.START).whenPressed(
+                new InstantCommand(robot.outtakeSubsystem::resetEncoders)
         );
     }
 
@@ -184,9 +245,26 @@ private boolean transfer = false;
     }
     private void enableTransfer(){
         transferTimer.reset();
+        intakeTransferTimer.reset();
         transfer = true;
     }
     private void disableTransfer(){
         transfer = false;
+    }
+    private void slowDown(){
+        multiplier = .25;
+    }
+    private void speedUp(){
+        multiplier = 1;
+    }
+    private void enableSubDrop(){constants.subDrop = true;}
+    private void disableSubDrop(){constants.subDrop = false;}
+
+
+    private void intakeKnockUp(){
+        constants.intPivotSub += .05;
+    }
+    private void intakeKnockDown(){
+        constants.intPivotSub -= .05;
     }
 }
