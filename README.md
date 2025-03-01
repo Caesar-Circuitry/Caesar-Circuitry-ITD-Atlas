@@ -9,6 +9,7 @@ This repository provides a collection of code and resources developed by team 24
 * **Pedro Pathing:** Implementation of Pedro pathing algorithms for precise and efficient robot movement. 
 * **FTC Lib Command Infrastructure:** Utilizes the robust and well-structured FTC libraries for command-based robot control.
 * **Custom PID Systems:** Includes custom-tuned PID controllers for various subsystems, such as drivetrains, arms, and intakes.
+* **SpotLess Code Formatting**: Utilizes SpotLess to format code to a consistent style. run `./gradlew spotlessApply` to format code.
 
 **Getting Started:**
 
