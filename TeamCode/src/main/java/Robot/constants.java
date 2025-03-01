@@ -12,7 +12,7 @@ public class constants{
     public static double outClawPivotTransfer = 0.87, outClawPivotChamber = 0, outClawPivotBasket = 0;
     public static double out4BarPivot1Transfer = .41, out4BarPivot1HighChamber = .83, out4BarPivot1LowChamber = 0,out4BarPivot1LowBasket = 0,out4BarPivot1HighBasket = .83;
     public static double out4BarPivot2Transfer = 0, out4BarPivot2HighChamber = 0, out4BarPivot2LowChamber = 0,out4BarPivot2LowBasket = 0,out4BarPivot2HighBasket = 0;
-    public static double outViperZero = 0, outViperTransfer = 0, outViperLowChamber = 5, outViperHighChamber = 7.5, outViperLowBasket = 10, outViperHighBasket = 15, outViperHang = 12, outViperHangDown = 6.5;
+    public static double outViperZero = 0, outViperTransfer = 0, outViperLowChamber = 5, outViperHighChamber = 8.5, outViperLowBasket = 10, outViperHighBasket = 15, outViperHang = 12, outViperHangDown = 4;
     public static double out4BarPivot1Start = 0.24, intClawPivotStart = .7,intPivotStart = 0.65;
     public static double intClawOpen = 1, intClawClose = .82; //old .72
     public static double intClawPivotSub = .35, intClawPivotObs = .35, intClawPivotTransfer = 1;

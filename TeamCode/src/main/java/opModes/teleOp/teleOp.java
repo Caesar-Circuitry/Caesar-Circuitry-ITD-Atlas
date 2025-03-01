@@ -36,6 +36,8 @@ import Robot.Commands.newScoringCommands.scoringSubUp;
 import Robot.Commands.newScoringCommands.scoringTransfer;
 import Robot.Commands.newScoringCommands.scoringTransferSample;
 import Robot.Commands.outtakeCommands.out4BarPivotHighChamber;
+import Robot.Commands.outtakeCommands.outViperHang;
+import Robot.Commands.outtakeCommands.outViperHangDown;
 import Robot.constants;
 import Robot.robotContainer;
 
@@ -74,7 +76,7 @@ private double multiplier = 1;
                 robot.drivetrainSubsystem.follower.startTeleopDrive();
             }
         }else{
-            robot.drivetrainSubsystem.follower.setTeleOpMovementVectors(-gamepad1.left_stick_y*multiplier,(-gamepad1.left_stick_x)*multiplier,(-gamepad1.right_stick_x*3/4)*multiplier,!fieldCentric);
+            robot.drivetrainSubsystem.follower.setTeleOpMovementVectors(-gamepad1.left_stick_y*multiplier,(-gamepad1.left_stick_x)*multiplier,(-gamepad1.right_stick_x*3/4)*multiplier,true);
         }
         if (transfer){
             if (intakeTransferTimer.milliseconds()>800){
@@ -83,7 +85,7 @@ private double multiplier = 1;
                 );
 
             }
-            if (transferTimer.milliseconds()>1750){
+            if (transferTimer.milliseconds()>1300){
                 schedule(
                     new InstantCommand(robot.outtakeSubsystem::closeClaw),
                     new InstantCommand(robot.intakeSubsystem::openClaw)
@@ -118,6 +120,12 @@ private double multiplier = 1;
                 );
             driver.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER).whenReleased(
                 new InstantCommand(this::speedUp)
+            );
+            driver.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
+                    new outViperHang(robot.outtakeSubsystem)
+            );
+            driver.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
+                    new outViperHangDown(robot.outtakeSubsystem)
             );
     }
 
@@ -163,14 +171,6 @@ private double multiplier = 1;
                         ), () -> constants.subDrop
 
                 ));
-
-        operator.getGamepadButton(GamepadKeys.Button.DPAD_UP).whenPressed(
-                new SequentialCommandGroup(
-                    new intClawOpen(robot.intakeSubsystem),
-                    new scoringObs(robot.outtakeSubsystem,robot.intakeSubsystem),
-                    new intSetViperObs(robot.intakeSubsystem)
-                )
-        );
         operator.getGamepadButton(GamepadKeys.Button.DPAD_DOWN).whenPressed(
                 new SequentialCommandGroup(
                         new intClawOpen(robot.intakeSubsystem),
@@ -259,7 +259,6 @@ private double multiplier = 1;
     }
     private void enableSubDrop(){constants.subDrop = true;}
     private void disableSubDrop(){constants.subDrop = false;}
-
 
     private void intakeKnockUp(){
         constants.intPivotSub += .05;
