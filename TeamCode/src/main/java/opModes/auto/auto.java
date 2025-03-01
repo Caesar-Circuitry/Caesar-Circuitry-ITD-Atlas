@@ -1,16 +1,16 @@
-//package opModes;
+// package opModes;
 //
-//import com.pedropathing.follower.Follower;
-//import com.pedropathing.pathgen.BezierLine;
-//import com.pedropathing.pathgen.PathBuilder;
-//import com.pedropathing.pathgen.Point;
-//import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-//import com.sfdev.assembly.state.StateMachine;
-//import com.sfdev.assembly.state.StateMachineBuilder;
+// import com.pedropathing.follower.Follower;
+// import com.pedropathing.pathgen.BezierLine;
+// import com.pedropathing.pathgen.PathBuilder;
+// import com.pedropathing.pathgen.Point;
+// import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+// import com.sfdev.assembly.state.StateMachine;
+// import com.sfdev.assembly.state.StateMachineBuilder;
 //
-//import Robot.Robot;
+// import Robot.Robot;
 //
-//public class auto extends OpMode {
+// public class auto extends OpMode {
 //    StateMachine stateMachine;
 //    Follower follower;
 //    @Override
@@ -162,4 +162,4 @@
 //                .setLinearHeadingInterpolation(Math.toRadians(-135), Math.toRadians(180));
 //
 //    }
-//}
+// }

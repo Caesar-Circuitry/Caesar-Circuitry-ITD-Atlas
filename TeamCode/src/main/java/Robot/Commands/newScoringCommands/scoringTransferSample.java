@@ -1,40 +1,39 @@
 package Robot.Commands.newScoringCommands;
 
-import com.arcrobotics.ftclib.command.CommandBase;
-
 import Robot.subsystems.intakeSubsystem;
 import Robot.subsystems.outtakeSubsystem;
+import com.arcrobotics.ftclib.command.CommandBase;
 
 public class scoringTransferSample extends CommandBase {
 
-    private final outtakeSubsystem outtakeSubsystem;
-    private final intakeSubsystem intakeSubsystem;
+  private final outtakeSubsystem outtakeSubsystem;
+  private final intakeSubsystem intakeSubsystem;
 
-    public scoringTransferSample(outtakeSubsystem outtakeSubsystem, intakeSubsystem intakeSubsystem){
-        this.outtakeSubsystem = outtakeSubsystem;
-        this.intakeSubsystem = intakeSubsystem;
-    }
+  public scoringTransferSample(outtakeSubsystem outtakeSubsystem, intakeSubsystem intakeSubsystem) {
+    this.outtakeSubsystem = outtakeSubsystem;
+    this.intakeSubsystem = intakeSubsystem;
+  }
 
-    @Override
-    public void initialize(){
-        outtakeSubsystem.openClaw();
-        intakeSubsystem.closeClawTele();
-        outtakeSubsystem.openClaw();
+  @Override
+  public void initialize() {
+    outtakeSubsystem.openClaw();
+    intakeSubsystem.closeClawTele();
+    outtakeSubsystem.openClaw();
 
-        intakeSubsystem.setIntClawPivotObs();
-        intakeSubsystem.setIntPivotTransfer();
-        intakeSubsystem.setViperTransfer();
-        intakeSubsystem.setIntClawRotateMiddle();
+    intakeSubsystem.setIntClawPivotObs();
+    intakeSubsystem.setIntPivotTransfer();
+    intakeSubsystem.setViperTransfer();
+    intakeSubsystem.setIntClawRotateMiddle();
 
-        outtakeSubsystem.setOut4BarPivotTransfer();
-        outtakeSubsystem.setVertSlideTransfer();
-        outtakeSubsystem.setOutClawPivotTransfer();
+    outtakeSubsystem.setOut4BarPivotTransfer();
+    outtakeSubsystem.setVertSlideTransfer();
+    outtakeSubsystem.setOutClawPivotTransfer();
 
-        //intakeSubsystem.openClaw();
-    }
-    @Override
-    public boolean isFinished(){
-        return true;
-    }
+    // intakeSubsystem.openClaw();
+  }
 
+  @Override
+  public boolean isFinished() {
+    return true;
+  }
 }

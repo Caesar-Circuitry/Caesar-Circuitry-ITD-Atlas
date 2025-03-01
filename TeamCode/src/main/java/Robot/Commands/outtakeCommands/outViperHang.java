@@ -1,24 +1,23 @@
 package Robot.Commands.outtakeCommands;
 
+import Robot.subsystems.outtakeSubsystem;
 import com.arcrobotics.ftclib.command.CommandBase;
 
-import Robot.subsystems.outtakeSubsystem;
-
 public class outViperHang extends CommandBase {
-    private final outtakeSubsystem subsystem;
+  private final outtakeSubsystem subsystem;
 
-    public outViperHang(outtakeSubsystem subsystem){
-        this.subsystem = subsystem;
-        addRequirements(this.subsystem);
-    }
-    @Override
-    public void initialize() {
-        subsystem.setVertSlideHang();
-    }
+  public outViperHang(outtakeSubsystem subsystem) {
+    this.subsystem = subsystem;
+    addRequirements(this.subsystem);
+  }
 
-    @Override
-    public boolean isFinished(){
-        return true;
-    }
+  @Override
+  public void initialize() {
+    subsystem.setVertSlideHang();
+  }
 
+  @Override
+  public boolean isFinished() {
+    return true;
+  }
 }
